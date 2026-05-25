@@ -82,128 +82,74 @@ useEffect(() => {
       </nav>
 
       {/* Hero Section */}
-      <section
+   <motion.section
   id="home"
+  initial={{ opacity: 0, y: 40 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.8 }}
+  viewport={{ once: true }}
   className="relative z-10 px-6 pt-40 pb-24"
 >
-
-  <div className="mx-auto max-w-7xl grid lg:grid-cols-2 gap-16 items-center">
+  <div className="mx-auto grid max-w-7xl items-center gap-16 lg:grid-cols-2">
 
     {/* LEFT SIDE */}
     <div>
-
-      <p className="mb-4 text-blue-400 tracking-[0.3em] uppercase text-sm">
-        AQW Guild
-      </p>
-
-      <h1 className="text-6xl md:text-8xl font-black leading-tight">
-
-        Forged in STORM.
-        <br />
-
-        <span className="text-blue-400">
-         United as LEGENDS.
+      <h1 className="text-7xl font-black leading-[0.95] tracking-tight md:text-8xl lg:text-9xl">
+        <span className="block text-white">
+          STORM.
         </span>
 
+        <span className="mt-8 block bg-gradient-to-b from-blue-300 to-blue-600 bg-clip-text text-transparent">
+          United as
+        </span>
+
+        <span className="block bg-gradient-to-b from-blue-300 to-blue-600 bg-clip-text text-transparent">
+          LEGENDS.
+        </span>
       </h1>
 
-      <p className="mt-8 max-w-xl text-lg text-gray-400 leading-relaxed">
+      <p className="mt-10 max-w-2xl text-xl leading-9 text-gray-400">
         Stormforged is an AQW community built around teamwork,
         grinding, ultra fights, cosmetics, and creating unforgettable
         memories together.
       </p>
 
-      <div className="mt-10 flex flex-wrap gap-4">
+      <div className="mt-12 flex flex-wrap gap-5">
+        <a
+          href="https://discord.com/invite/KmPjAjtTCB"
+          target="_blank"
+          rel="noreferrer"
+          className="rounded-xl bg-blue-500 px-9 py-4 text-lg font-bold text-white shadow-lg shadow-blue-500/30 transition hover:scale-105 hover:bg-blue-400"
+        >
+          Join Discord
+        </a>
 
-         <a
-  href="https://discord.gg/KmPjAjtTCB"
-  target="_blank"
-  rel="noreferrer"
-  className="rounded-xl bg-blue-500 px-8 py-4 font-semibold text-white shadow-lg shadow-blue-500/30 transition hover:scale-105 hover:bg-blue-400"
->
-  Join Discord
-</a>
-
-        <button className="rounded-xl border border-white/10 bg-white/5 px-8 py-4 font-semibold text-white backdrop-blur-md transition hover:border-blue-400 hover:bg-blue-500/10">
-          <a href="#roster">Roster</a>
-        </button>
-
+        <a
+          href="/roster"
+          className="rounded-xl border border-white/20 bg-white/5 px-9 py-4 text-lg font-bold text-white backdrop-blur-xl transition hover:border-blue-400 hover:bg-blue-500/10"
+        >
+          Roster
+        </a>
       </div>
-
-      {/* STATS */}
-      <div className="mt-16 grid grid-cols-3 gap-4">
-
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-xl">
-          <p className="text-gray-400 text-sm">Members</p>
-          <h2 className="mt-2 text-3xl font-bold text-blue-400">
-            160
-          </h2>
-        </div>
-
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-xl">
-          <p className="text-gray-400 text-sm">Online</p>
-          <h2 className="mt-2 text-3xl font-bold text-green-400">
-            42
-          </h2>
-        </div>
-
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-xl">
-          <p className="text-gray-400 text-sm">Guild Rank</p>
-          <h2 className="mt-2 text-3xl font-bold text-cyan-400">
-            #12
-          </h2>
-        </div>
-
-      </div>
-
     </div>
 
     {/* RIGHT SIDE */}
     <div className="relative">
+      <div className="absolute inset-0 rounded-[36px] bg-blue-500/20 blur-3xl"></div>
 
-      {/* Glow */}
-      <div className="absolute inset-0 rounded-[40px] bg-blue-500/20 blur-3xl"></div>
-
-      {/* Main Card */}
-      <div className="relative rounded-[32px] border border-white/10 bg-white/5 p-8 backdrop-blur-2xl">
-
+      <div className="relative overflow-hidden rounded-[36px] border border-white/10 bg-black/30 shadow-2xl shadow-blue-500/10">
         <img
-          src="/images/Stormforged.png"
-          alt="Stormforged"
-          className="w-full rounded-2xl object-cover"
+          src="/images/stormforged-logo.png"
+          alt="Stormforged Guild"
+          className="h-[720px] w-full object-cover"
         />
 
-        <div className="mt-8 grid grid-cols-2 gap-4">
-
-          <div className="rounded-2xl bg-black/30 p-5 border border-white/10">
-            <p className="text-gray-400 text-sm">
-              Active Events
-            </p>
-
-            <h3 className="mt-2 text-2xl font-bold">
-              Weekly Ultras
-            </h3>
-          </div>
-
-          <div className="rounded-2xl bg-black/30 p-5 border border-white/10">
-            <p className="text-gray-400 text-sm">
-              Community
-            </p>
-
-            <h3 className="mt-2 text-2xl font-bold">
-              AQW Veterans
-            </h3>
-          </div>
-
-        </div>
-
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
       </div>
-
     </div>
 
   </div>
-
-</section>
+</motion.section>
 {/* FEATURES SECTION */}
 
 <motion.section
