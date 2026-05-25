@@ -69,7 +69,7 @@ useEffect(() => {
       {/* Navbar */}
       <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 py-6 border-b border-white/10 bg-[#050816]/70 backdrop-blur-md">
 
-        <h1 className="text-3xl font-bold tracking-wide text-blue-400">
+        <h1 className="text-2xl font-bold tracking-wide text-blue-400 sm:text-3xl">
           STORMFORGED
         </h1>
 
@@ -88,13 +88,13 @@ useEffect(() => {
   whileInView={{ opacity: 1, y: 0 }}
   transition={{ duration: 0.8 }}
   viewport={{ once: true }}
-  className="relative z-10 px-6 pt-40 pb-24"
+  className="relative z-10 px-6 pt-28 pb-20 sm:pt-36 lg:pt-40 lg:pb-24"
 >
   <div className="mx-auto grid max-w-7xl items-center gap-16 lg:grid-cols-2">
 
     {/* LEFT SIDE */}
     <div>
-      <h1 className="text-7xl font-black leading-[0.95] tracking-tight md:text-8xl lg:text-9xl">
+      <h1 className="text-5xl font-black leading-[0.95] tracking-tight sm:text-6xl md:text-8xl lg:text-9xl">
         <span className="block text-white">
           Forged in STORM.
         </span>
@@ -114,7 +114,7 @@ useEffect(() => {
         memories together.
       </p>
 
-      <div className="mt-12 flex flex-wrap gap-5">
+      <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:gap-5">
         <a
           href="https://discord.com/invite/KmPjAjtTCB"
           target="_blank"
@@ -141,7 +141,7 @@ useEffect(() => {
         <img
           src="/images/Stormforged.png"
           alt="Stormforged Guild"
-          className="h-[720px] w-full object-cover"
+          className="h-[360px] w-full object-cover sm:h-[520px] lg:h-[720px]"
         />
 
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
