@@ -96,7 +96,7 @@ useEffect(() => {
     <div>
       <h1 className="text-7xl font-black leading-[0.95] tracking-tight md:text-8xl lg:text-9xl">
         <span className="block text-white">
-          STORM.
+          Forged in STORM.
         </span>
 
         <span className="mt-8 block bg-gradient-to-b from-blue-300 to-blue-600 bg-clip-text text-transparent">
@@ -139,7 +139,7 @@ useEffect(() => {
 
       <div className="relative overflow-hidden rounded-[36px] border border-white/10 bg-black/30 shadow-2xl shadow-blue-500/10">
         <img
-          src="/images/stormforged-logo.png"
+          src="/images/Stormforged.png"
           alt="Stormforged Guild"
           className="h-[720px] w-full object-cover"
         />
