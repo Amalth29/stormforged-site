@@ -73,12 +73,19 @@ useEffect(() => {
           STORMFORGED
         </h1>
 
-        <div className="hidden md:flex gap-6 text-sm text-gray-300">
+        <div className="hidden gap-6 text-sm text-gray-300 md:flex">
           <a href="#home" className="hover:text-blue-400 transition">Home</a>
-          <a href="#roster" className="hover:text-blue-400 transition">Roster</a>
+          <a href="/roster" className="hover:text-blue-400 transition">Roster</a>
           <a href="#features" className="hover:text-blue-400 transition">Features</a>
           <a href="#gallery" className="hover:text-blue-400 transition">Gallery</a>
-        </div>
+</div>
+
+<a
+  href="/roster"
+  className="rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-white md:hidden"
+>
+  Roster
+</a>
       </nav>
 
       {/* Hero Section */}
@@ -94,7 +101,7 @@ useEffect(() => {
 
     {/* LEFT SIDE */}
     <div>
-      <h1 className="text-5xl font-black leading-[0.95] tracking-tight sm:text-6xl md:text-8xl lg:text-9xl">
+      <h1 className="text-4xl font-black leading-[1] tracking-tight sm:text-6xl md:text-8xl lg:text-9xl">
         <span className="block text-white">
           Forged in STORM.
         </span>
@@ -290,7 +297,7 @@ useEffect(() => {
 
       {/* HEADER */}
 
-      <div className="grid grid-cols-3 border-b border-white/10 px-8 py-5 text-sm uppercase tracking-widest text-gray-400">
+      <div className="grid grid-cols-[1.4fr_1fr_0.6fr] border-b border-white/10 px-8 py-5 text-sm uppercase tracking-widest text-gray-400">
 
         <div>Name</div>
         <div>Rank</div>
@@ -304,7 +311,7 @@ useEffect(() => {
 
   <div
     key={index}
-    className="grid grid-cols-3 border-b border-white/5 px-8 py-5 transition hover:bg-white/5"
+    className="grid grid-cols-[1.4fr_1fr_0.6fr] border-b border-white/5 px-8 py-5 transition hover:bg-white/5"
   >
 
     <div className="font-semibold">
@@ -433,7 +440,7 @@ useEffect(() => {
       Join the Forge
     </p>
 
-    <h2 className="mt-4 text-5xl font-black">
+    <h2 className="mt-4 text-4xl font-black leading-tight sm:text-5xl">
       Ready to become Stormforged?
     </h2>
 
