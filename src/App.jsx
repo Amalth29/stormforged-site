@@ -101,23 +101,22 @@ useEffect(() => {
       </nav>
 
       {/* Hero Section */}
-   <motion.section
+<motion.section
   id="home"
   initial={{ opacity: 0 }}
   animate={{ opacity: 1 }}
   transition={{ duration: 0.8 }}
-  className="relative z-10 mt-20 pt-2 h-[85vh] min-h-[600px] overflow-hidden"
+  className="relative z-10 mt-20 h-[85vh] min-h-[600px] overflow-hidden"
 >
   <img
-    src="/images/actual banner.png"
+    src="/images/hero-banner.png"
     alt="Stormforged Banner"
     className="absolute inset-0 h-full w-full object-cover"
   />
 
   <div className="absolute inset-0 bg-gradient-to-t from-[#050816] via-[#050816]/30 to-black/40"></div>
-
-  
 </motion.section>
+
 <div className="relative z-10 flex justify-center bg-[#050816] px-6 py-8">
   <div className="flex flex-col gap-4 sm:flex-row">
     <a
