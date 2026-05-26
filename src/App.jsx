@@ -199,7 +199,7 @@ useEffect(() => {
 
     </div>
 
-    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-[1.6fr_0.9fr_0.5fr]">
 
       {/* CARD 1 */}
 
@@ -323,12 +323,17 @@ useEffect(() => {
 
   <div
     key={index}
-    className="grid grid-cols-[1.4fr_1fr_0.6fr] border-b border-white/5 px-8 py-5 transition hover:bg-white/5"
+    className="grid grid-cols-[1.6fr_0.9fr_0.5fr] border-b border-white/5 px-4 py-5 text-sm transition hover:bg-white/5 sm:px-8 sm:text-base"
   >
 
-    <div className="font-semibold">
-      {member.name}
-    </div>
+    <a
+  href={`https://account.aq.com/CharPage?id=${encodeURIComponent(member.name)}`}
+  target="_blank"
+  rel="noreferrer"
+  className="truncate pr-3 font-semibold transition hover:text-blue-400"
+>
+  {member.name}
+</a>
 
     <div className="text-blue-400">
       {member.rank}
