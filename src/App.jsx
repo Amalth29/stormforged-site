@@ -68,14 +68,14 @@ useEffect(() => {
       <div className="absolute glow-orb bottom-[-150px] right-[-100px] h-[400px] w-[400px] rounded-full bg-cyan-400/10 blur-3xl"></div>
       <div className="absolute glow-orb top-[30%] left-1/2 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-cyan-500/10 blur-3xl"></div>
       {/* Navbar */}
-      <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 py-6 border-b border-white/10 bg-[#050816]/70 backdrop-blur-md">
+      <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between border-b border-white/5 bg-[#050816]/35 px-8 py-6 backdrop-blur-xl">
 
         <h1 className="text-2xl font-bold tracking-wide text-blue-400 sm:text-3xl">
           STORMFORGED
         </h1>
 
         <div className="hidden gap-6 text-sm text-gray-300 md:flex">
-          <a href="#home" className="hover:text-blue-400 transition">Home</a>
+          <a href="/" className="hover:text-blue-400 transition">Home</a>
           <a href="/roster" className="hover:text-blue-400 transition">Roster</a>
           <a href="#features" className="hover:text-blue-400 transition">Features</a>
           <a href="#gallery" className="hover:text-blue-400 transition">Gallery</a>
@@ -91,7 +91,7 @@ useEffect(() => {
 
   {mobileMenuOpen && (
     <div className="absolute right-0 mt-3 w-44 rounded-2xl border border-white/10 bg-[#070b1a] p-3 shadow-2xl">
-      <a href="#home" className="block rounded-xl px-4 py-3 text-white hover:bg-white/10">Home</a>
+      <a href="/" className="block rounded-xl px-4 py-3 text-white hover:bg-white/10">Home</a>
       <a href="/roster" className="block rounded-xl px-4 py-3 text-white hover:bg-white/10">Roster</a>
       <a href="#features" className="block rounded-xl px-4 py-3 text-white hover:bg-white/10">Features</a>
       <a href="#gallery" className="block rounded-xl px-4 py-3 text-white hover:bg-white/10">Gallery</a>
@@ -117,7 +117,7 @@ useEffect(() => {
   <div className="absolute inset-0 bg-gradient-to-t from-[#050816] via-[#050816]/30 to-black/40"></div>
 </motion.section>
 
-<div className="relative z-10 -mt-24 flex justify-center bg-[#050816] px-6 pb-10">
+<div className="relative z-10 -mt-4 flex justify-center bg-[#050816] px-6 pb-10">
   <div className="flex flex-col gap-4 sm:flex-row">
     <a
       href="https://discord.gg/KmPjAjtTCB"
@@ -443,7 +443,7 @@ useEffect(() => {
 
 <footer className="relative z-10 border-t border-white/10 px-6 py-10 text-center text-sm text-gray-500">
   <div className="mb-4 flex justify-center gap-6">
-    <a href="#home" className="hover:text-blue-400">Home</a>
+    <a href="/" className="hover:text-blue-400">Home</a>
     <a href="#roster" className="hover:text-blue-400">Roster</a>
     <a href="#features" className="hover:text-blue-400">Features</a>
     <a href="#gallery" className="hover:text-blue-400">Gallery</a>
