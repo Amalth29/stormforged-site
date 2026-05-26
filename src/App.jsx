@@ -199,7 +199,7 @@ useEffect(() => {
 
     </div>
 
-    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-[1.6fr_0.9fr_0.5fr]">
+    <div className="grid gap-6 md:grid-cols-3">
 
       {/* CARD 1 */}
 
