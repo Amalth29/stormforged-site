@@ -116,10 +116,10 @@ useEffect(() => {
 
   <div className="absolute inset-0 bg-gradient-to-t from-[#050816] via-[#050816]/30 to-black/40"></div>
 
-  <div className="relative z-10 flex h-full items-end justify-center px-6 pb-28">
+  <div className="relative z-10 flex justify-center bg-[#050816] px-6 py-8">
   <div className="flex flex-col gap-4 sm:flex-row">
     <a
-      href="YOUR_DISCORD_INVITE"
+      href="https://discord.gg/KmPjAjtTCB"
       target="_blank"
       rel="noreferrer"
       className="rounded-xl bg-blue-500 px-9 py-4 text-center text-base font-bold text-white shadow-lg shadow-blue-500/30 transition hover:scale-105 hover:bg-blue-400"
