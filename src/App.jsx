@@ -109,7 +109,7 @@ useEffect(() => {
   className="relative z-10 mt-20 h-[85vh] min-h-[600px] overflow-hidden"
 >
   <img
-    src="/images/hero-banner.png"
+    src="/images/actual banner.png"
     alt="Stormforged Banner"
     className="absolute inset-0 h-full w-full object-cover"
   />
