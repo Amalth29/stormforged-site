@@ -103,70 +103,37 @@ useEffect(() => {
       {/* Hero Section */}
    <motion.section
   id="home"
-  initial={{ opacity: 0, y: 40 }}
-  whileInView={{ opacity: 1, y: 0 }}
+  initial={{ opacity: 0 }}
+  animate={{ opacity: 1 }}
   transition={{ duration: 0.8 }}
-  viewport={{ once: true }}
-  className="relative z-10 px-6 pt-28 pb-20 sm:pt-36 lg:pt-32 xl:pt-36"
+  className="relative z-10 h-[85vh] min-h-[600px] overflow-hidden"
 >
-  <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-2 xl:gap-16">
+  <img
+    src="/images/actual banner.png"
+    alt="Stormforged Banner"
+    className="absolute inset-0 h-full w-full object-cover"
+  />
 
-    {/* LEFT SIDE */}
-    <div>
-      <h1 className="text-[clamp(3.5rem,7vw,7rem)] font-black leading-[0.95] tracking-tight">
-        <span className="block text-white">
-          Forged in STORM.
-        </span>
+  <div className="absolute inset-0 bg-gradient-to-t from-[#050816] via-[#050816]/30 to-black/40"></div>
 
-        <span className="mt-8 block bg-gradient-to-b from-blue-300 to-blue-600 bg-clip-text text-transparent">
-          United as
-        </span>
+  <div className="relative z-10 flex h-full items-end justify-center px-6 pb-20">
+    <div className="flex flex-col gap-4 sm:flex-row">
+      <a
+        href="YOUR_DISCORD_INVITE"
+        target="_blank"
+        rel="noreferrer"
+        className="rounded-xl bg-blue-500 px-10 py-4 text-center text-lg font-bold text-white shadow-lg shadow-blue-500/30 transition hover:scale-105 hover:bg-blue-400"
+      >
+        Join Discord
+      </a>
 
-        <span className="block bg-gradient-to-b from-blue-300 to-blue-600 bg-clip-text text-transparent">
-          LEGENDS.
-        </span>
-      </h1>
-
-      <p className="mt-10 max-w-2xl text-xl leading-9 text-gray-400">
-        Stormforged is an AQW community built around teamwork,
-        grinding, ultra fights, cosmetics, and creating unforgettable
-        memories together.
-      </p>
-
-      <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:gap-5">
-        <a
-          href="https://discord.com/invite/KmPjAjtTCB"
-          target="_blank"
-          rel="noreferrer"
-          className="rounded-xl bg-blue-500 px-9 py-4 text-lg font-bold text-white shadow-lg shadow-blue-500/30 transition hover:scale-105 hover:bg-blue-400"
-        >
-          Join Discord
-        </a>
-
-        <a
-          href="/roster"
-          className="rounded-xl border border-white/20 bg-white/5 px-9 py-4 text-lg font-bold text-white backdrop-blur-xl transition hover:border-blue-400 hover:bg-blue-500/10"
-        >
-          Roster
-        </a>
-      </div>
+      <a
+        href="/roster"
+        className="rounded-xl border border-white/20 bg-black/40 px-10 py-4 text-center text-lg font-bold text-white backdrop-blur-xl transition hover:border-blue-400 hover:bg-blue-500/10"
+      >
+        Roster
+      </a>
     </div>
-
-    {/* RIGHT SIDE */}
-    <div className="relative">
-      <div className="absolute inset-0 rounded-[36px] bg-blue-500/20 blur-3xl"></div>
-
-      <div className="relative overflow-hidden rounded-[36px] border border-white/10 bg-black/30 shadow-2xl shadow-blue-500/10">
-        <img
-          src="/images/Stormforged.png"
-          alt="Stormforged Guild"
-          className="h-[clamp(360px,65vh,680px)] w-full object-cover"
-        />
-
-        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
-      </div>
-    </div>
-
   </div>
 </motion.section>
 {/* FEATURES SECTION */}
