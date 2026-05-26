@@ -107,13 +107,13 @@ useEffect(() => {
   whileInView={{ opacity: 1, y: 0 }}
   transition={{ duration: 0.8 }}
   viewport={{ once: true }}
-  className="relative z-10 px-6 pt-28 pb-20 sm:pt-36 lg:pt-40 lg:pb-24"
+  className="relative z-10 px-6 pt-28 pb-20 sm:pt-36 lg:pt-32 xl:pt-36"
 >
-  <div className="mx-auto grid max-w-7xl items-center gap-16 lg:grid-cols-2">
+  <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-2 xl:gap-16">
 
     {/* LEFT SIDE */}
     <div>
-      <h1 className="text-4xl font-black leading-[1] tracking-tight sm:text-6xl md:text-8xl lg:text-9xl">
+      <h1 className="text-[clamp(3.5rem,7vw,7rem)] font-black leading-[0.95] tracking-tight">
         <span className="block text-white">
           Forged in STORM.
         </span>
@@ -160,7 +160,7 @@ useEffect(() => {
         <img
           src="/images/Stormforged.png"
           alt="Stormforged Guild"
-          className="h-[360px] w-full object-cover sm:h-[520px] lg:h-[720px]"
+          className="h-[clamp(360px,65vh,680px)] w-full object-cover"
         />
 
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
