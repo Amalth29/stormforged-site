@@ -164,28 +164,28 @@ if (loading) {
           {filteredRoster.map((member, index) => (
 
             <div
-              key={index}
-              className="grid grid-cols-3 border-b border-white/5 px-8 py-5 transition hover:bg-white/5"
-            >
-
-              <a
-  href={`https://account.aq.com/CharPage?id=${encodeURIComponent(member.name)}`}
-  target="_blank"
-  rel="noreferrer"
-  className="font-semibold transition hover:text-blue-400"
+  key={index}
+  className="grid grid-cols-[1.6fr_0.9fr_0.5fr] border-b border-white/5 px-4 py-5 text-sm transition hover:bg-white/5 sm:px-8 sm:text-base"
 >
-  {member.name}
-</a>
+  <div className="min-w-0">
+    <a
+      href={`https://account.aq.com/CharPage?id=${encodeURIComponent(member.name)}`}
+      target="_blank"
+      rel="noreferrer"
+      className="block max-w-[120px] truncate font-semibold transition hover:text-blue-400 sm:max-w-none"
+    >
+      {member.name}
+    </a>
+  </div>
 
-              <div className="text-blue-400">
-                {member.rank}
-              </div>
+  <span className="text-blue-400">
+    {member.rank}
+  </span>
 
-              <div className="text-gray-300">
-                {member.level}
-              </div>
-
-            </div>
+  <div className="text-gray-300">
+    {member.level}
+  </div>
+</div>
 
           ))}
 

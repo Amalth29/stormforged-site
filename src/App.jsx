@@ -296,7 +296,7 @@ useEffect(() => {
 
       <a
   href="/roster"
-  className="rounded-xl border border-white/10 bg-white/5 px-6 py-3 min-w-0 font-semibold text-white backdrop-blur-md transition hover:border-blue-400 hover:bg-blue-500/10"
+  className="rounded-xl border border-white/10 bg-white/5 px-6 py-3 font-semibold text-white backdrop-blur-md transition hover:border-blue-400 hover:bg-blue-500/10"
 >
   View Full Roster
 </a>
