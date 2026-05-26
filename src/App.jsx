@@ -5,6 +5,7 @@ import roster from "./data/roster.json";
 export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const galleryImages = [
     "/images/gold1.png",
     "/images/goldset.png",
@@ -80,12 +81,23 @@ useEffect(() => {
           <a href="#gallery" className="hover:text-blue-400 transition">Gallery</a>
 </div>
 
-<a
-  href="/roster"
-  className="rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-white md:hidden"
->
-  Roster
-</a>
+<div className="relative md:hidden">
+  <button
+    onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+    className="rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-white"
+  >
+    Menu
+  </button>
+
+  {mobileMenuOpen && (
+    <div className="absolute right-0 mt-3 w-44 rounded-2xl border border-white/10 bg-[#070b1a] p-3 shadow-2xl">
+      <a href="#home" className="block rounded-xl px-4 py-3 text-white hover:bg-white/10">Home</a>
+      <a href="/roster" className="block rounded-xl px-4 py-3 text-white hover:bg-white/10">Roster</a>
+      <a href="#features" className="block rounded-xl px-4 py-3 text-white hover:bg-white/10">Features</a>
+      <a href="#gallery" className="block rounded-xl px-4 py-3 text-white hover:bg-white/10">Gallery</a>
+    </div>
+  )}
+</div>
       </nav>
 
       {/* Hero Section */}
