@@ -116,7 +116,9 @@ useEffect(() => {
 
   <div className="absolute inset-0 bg-gradient-to-t from-[#050816] via-[#050816]/30 to-black/40"></div>
 
-  <div className="relative z-10 flex justify-center bg-[#050816] px-6 py-8">
+  
+</motion.section>
+<div className="relative z-10 flex justify-center bg-[#050816] px-6 py-8">
   <div className="flex flex-col gap-4 sm:flex-row">
     <a
       href="https://discord.gg/KmPjAjtTCB"
@@ -135,7 +137,6 @@ useEffect(() => {
     </a>
   </div>
 </div>
-</motion.section>
 {/* FEATURES SECTION */}
 
 <motion.section
