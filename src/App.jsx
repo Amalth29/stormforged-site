@@ -106,7 +106,7 @@ useEffect(() => {
   initial={{ opacity: 0 }}
   animate={{ opacity: 1 }}
   transition={{ duration: 0.8 }}
-  className="relative z-10 h-[85vh] min-h-[600px] overflow-hidden"
+  className="relative z-10 mt-20 pt-2 h-[85vh] min-h-[600px] overflow-hidden"
 >
   <img
     src="/images/actual banner.png"
@@ -116,25 +116,25 @@ useEffect(() => {
 
   <div className="absolute inset-0 bg-gradient-to-t from-[#050816] via-[#050816]/30 to-black/40"></div>
 
-  <div className="relative z-10 flex h-full items-center justify-center px-6 pt-40">
-    <div className="flex flex-col items-center gap-5 rounded-3xl border border-white/10 bg-black/30 p-5 backdrop-blur-xl sm:flex-row sm:px-8 sm:py-5">
-      <a
-        href="https://discord.gg/KmPjAjtTCB"
-        target="_blank"
-        rel="noreferrer"
-        className="rounded-xl bg-blue-500 px-8 py-3 text-center text-lg font-bold text-white shadow-lg shadow-blue-500/30 transition hover:scale-105 hover:bg-blue-400"
-      >
-        Join Discord
-      </a>
+  <div className="relative z-10 flex h-full items-end justify-center px-6 pb-28">
+  <div className="flex flex-col gap-4 sm:flex-row">
+    <a
+      href="YOUR_DISCORD_INVITE"
+      target="_blank"
+      rel="noreferrer"
+      className="rounded-xl bg-blue-500 px-9 py-4 text-center text-base font-bold text-white shadow-lg shadow-blue-500/30 transition hover:scale-105 hover:bg-blue-400"
+    >
+      Join Discord
+    </a>
 
-      <a
-        href="/roster"
-        className="rounded-xl border border-white/20 bg-black/40 px-18 py-3 text-center text-lg font-bold text-white backdrop-blur-xl transition hover:border-blue-400 hover:bg-blue-500/10"
-      >
-        Roster
-      </a>
-    </div>
+    <a
+      href="/roster"
+      className="rounded-xl border border-white/20 bg-black/50 px-9 py-4 text-center text-base font-bold text-white backdrop-blur-md transition hover:border-blue-400 hover:bg-blue-500/10"
+    >
+      Roster
+    </a>
   </div>
+</div>
 </motion.section>
 {/* FEATURES SECTION */}
 
