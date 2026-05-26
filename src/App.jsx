@@ -111,7 +111,7 @@ useEffect(() => {
   <img
     src="/images/actual banner.png"
     alt="Stormforged Banner"
-    className="absolute inset-0 h-full w-full object-cover"
+    className="absolute inset-0 h-full w-full object-contain bg-[#050816] sm:object-cover"
   />
 
   <div className="absolute inset-0 bg-gradient-to-t from-[#050816] via-[#050816]/30 to-black/40"></div>
