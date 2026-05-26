@@ -203,7 +203,7 @@ useEffect(() => {
 
       {/* CARD 1 */}
 
-      <div className="group rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl transition hover:shadow-2xl hover:shadow-blue-500/10 hover:border-blue-400/50">
+      <div className="rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl transition hover:-translate-y-2 hover:border-blue-400/50 hover:shadow-2xl hover:shadow-blue-500/10">
 
         <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-500/20 text-3xl">
           ⚔️
@@ -222,7 +222,7 @@ useEffect(() => {
 
       {/* CARD 2 */}
 
-      <div className="group rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl transition hover:shadow-2xl hover:shadow-blue-500/10 hover:border-cyan-400/50">
+      <div className="rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl transition hover:-translate-y-2 hover:border-blue-400/50 hover:shadow-2xl hover:shadow-blue-500/10">
 
         <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-cyan-500/20 text-3xl">
           🛡️
@@ -241,7 +241,7 @@ useEffect(() => {
 
       {/* CARD 3 */}
 
-      <div className="group rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl transition hover:-translate-y-2 hover:border-indigo-400/50">
+      <div className="rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl transition hover:-translate-y-2 hover:border-blue-400/50 hover:shadow-2xl hover:shadow-blue-500/10">
 
         <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-indigo-500/20 text-3xl">
           🌩️
