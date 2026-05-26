@@ -79,6 +79,7 @@ useEffect(() => {
           <a href="/roster" className="hover:text-blue-400 transition">Roster</a>
           <a href="#features" className="hover:text-blue-400 transition">Features</a>
           <a href="#gallery" className="hover:text-blue-400 transition">Gallery</a>
+          <a href="#join" className="hover:text-blue-400 transition">Join Us</a>
 </div>
 
 <div className="relative md:hidden">
@@ -95,6 +96,7 @@ useEffect(() => {
       <a href="/roster" className="block rounded-xl px-4 py-3 text-white hover:bg-white/10">Roster</a>
       <a href="#features" className="block rounded-xl px-4 py-3 text-white hover:bg-white/10">Features</a>
       <a href="#gallery" className="block rounded-xl px-4 py-3 text-white hover:bg-white/10">Gallery</a>
+       <a href="#join" className="block rounded-xl px-4 py-3 text-white hover:bg-white/10">Join Us</a>
     </div>
   )}
 </div>
@@ -106,36 +108,18 @@ useEffect(() => {
   initial={{ opacity: 0 }}
   animate={{ opacity: 1 }}
   transition={{ duration: 0.8 }}
-  className="relative z-10 mt-20 h-[85vh] min-h-[600px] overflow-hidden"
+  className="relative z-10 mt-20 h-screen overflow-hidden"
 >
   <img
     src="/images/actual banner.png"
     alt="Stormforged Banner"
-    className="absolute inset-0 h-full w-full object-contain bg-[#050816] sm:object-cover"
+    className="absolute inset-0 h-full w-full object-cover brightness-110"
   />
 
-  <div className="absolute inset-0 bg-gradient-to-t from-[#050816] via-[#050816]/30 to-black/40"></div>
+  <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#050816]/20" />
 </motion.section>
 
-<div className="relative z-10 -mt-4 flex justify-center bg-[#050816] px-6 pb-10">
-  <div className="flex flex-col gap-4 sm:flex-row">
-    <a
-      href="https://discord.gg/KmPjAjtTCB"
-      target="_blank"
-      rel="noreferrer"
-      className="rounded-xl bg-blue-500 px-9 py-4 text-center text-base font-bold text-white shadow-lg shadow-blue-500/30 transition hover:scale-105 hover:bg-blue-400"
-    >
-      Join Discord
-    </a>
 
-    <a
-      href="/roster"
-      className="rounded-xl border border-white/20 bg-black/50 px-9 py-4 text-center text-base font-bold text-white backdrop-blur-md transition hover:border-blue-400 hover:bg-blue-500/10"
-    >
-      Roster
-    </a>
-  </div>
-</div>
 {/* FEATURES SECTION */}
 
 <motion.section
@@ -416,7 +400,7 @@ useEffect(() => {
 </motion.section>
 {/* JOIN SECTION */}
 
-<section className="relative z-10 px-6 py-28">
+<section id="join" className="relative z-10 px-6 py-28">
 
   <div className="mx-auto max-w-5xl rounded-[40px] border border-blue-400/20 bg-blue-500/10 p-12 text-center backdrop-blur-2xl">
 
@@ -447,6 +431,7 @@ useEffect(() => {
     <a href="#roster" className="hover:text-blue-400">Roster</a>
     <a href="#features" className="hover:text-blue-400">Features</a>
     <a href="#gallery" className="hover:text-blue-400">Gallery</a>
+    <a href="#join" className="transition hover:text-blue-400">Join Us</a>
   </div>
 
   <p>© 2026 Stormforged. Forged in STORM. United as LEGENDS.</p>
