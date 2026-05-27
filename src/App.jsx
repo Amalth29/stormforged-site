@@ -76,9 +76,10 @@ useEffect(() => {
 
         <div className="hidden gap-6 text-sm text-gray-300 md:flex">
           <a href="/" className="hover:text-blue-400 transition">Home</a>
-          <a href="/roster" className="hover:text-blue-400 transition">Roster</a>
           <a href="#features" className="hover:text-blue-400 transition">Features</a>
+          <a href="#roster" className="hover:text-blue-400 transition">Roster</a> 
           <a href="#gallery" className="hover:text-blue-400 transition">Gallery</a>
+          <a href="#alliances" className="hover:text-blue-400 transition">Alliances</a>
           <a href="#join" className="hover:text-blue-400 transition">Join Us</a>
 </div>
 
@@ -93,9 +94,10 @@ useEffect(() => {
   {mobileMenuOpen && (
     <div className="absolute right-0 mt-3 w-44 rounded-2xl border border-white/10 bg-[#070b1a] p-3 shadow-2xl">
       <a href="/" className="block rounded-xl px-4 py-3 text-white hover:bg-white/10">Home</a>
-      <a href="/roster" className="block rounded-xl px-4 py-3 text-white hover:bg-white/10">Roster</a>
       <a href="#features" className="block rounded-xl px-4 py-3 text-white hover:bg-white/10">Features</a>
+      <a href="/roster" className="block rounded-xl px-4 py-3 text-white hover:bg-white/10">Roster</a>
       <a href="#gallery" className="block rounded-xl px-4 py-3 text-white hover:bg-white/10">Gallery</a>
+      <a href="#alliances" className="block rounded-xl px-4 py-3 text-white hover:bg-white/10">Alliances</a>
        <a href="#join" className="block rounded-xl px-4 py-3 text-white hover:bg-white/10">Join Us</a>
     </div>
   )}
@@ -398,6 +400,84 @@ useEffect(() => {
 )}
   </div>
 </motion.section>
+{/* ALLIANCES SECTION */}
+
+<motion.section
+  id="alliances"
+  initial={{ opacity: 0, y: 40 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.8 }}
+  viewport={{ once: true }}
+  className="relative z-10 px-6 py-24"
+>
+  <div className="mx-auto max-w-7xl">
+
+    <div className="mb-14 text-center">
+      <p className="text-blue-400 uppercase tracking-[0.3em] text-sm">
+        Allied Guilds
+      </p>
+
+      <h2 className="mt-4 text-5xl font-black">
+        Our Alliances
+      </h2>
+
+      <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-400">
+        Guilds and communities standing alongside Stormforged.
+      </p>
+    </div>
+
+    <div className="grid gap-6 md:grid-cols-3">
+
+      {[
+        {
+          name: "Ravens",
+          image: "/images/ravens.png",
+          url: "https://ravensaqw.lol",
+        },
+        {
+          name: "Solaris",
+          image: "/images/solarisactual.png",
+          url: "https://solarisaqw.lol",
+        },
+        {
+          name: "Vanaheim",
+          image: "/images/vanaheim.png",
+          url: "https://vanaheim.app",
+        },
+      ].map((alliance, index) => (
+       <a
+  key={index}
+  href={alliance.url}
+  target="_blank"
+  rel="noreferrer"
+  className="group overflow-hidden rounded-[32px] border border-white/10 bg-white/5 backdrop-blur-xl transition duration-300 hover:-translate-y-2 hover:border-blue-400/40"
+>
+  <div
+    className="relative h-[420px] w-full overflow-hidden"
+    style={{
+      background:
+        alliance.name === "Ravens"
+          ? "linear-gradient(to bottom right, #160000, #050816)"
+          : alliance.name === "Solaris"
+          ? "linear-gradient(to bottom right, #3b2b00, #050816)"
+          : "linear-gradient(to bottom right, #2b1a00, #050816)",
+    }}
+  >
+    <img
+      src={alliance.image}
+      alt={alliance.name}
+      className="h-full w-full object-contain transition duration-500 group-hover:scale-105"
+    />
+  </div>
+
+  
+</a>
+      ))}
+
+    </div>
+
+  </div>
+</motion.section>
 {/* JOIN SECTION */}
 
 <section id="join" className="relative z-10 px-6 py-28">
@@ -428,9 +508,10 @@ useEffect(() => {
 <footer className="relative z-10 border-t border-white/10 px-6 py-10 text-center text-sm text-gray-500">
   <div className="mb-4 flex justify-center gap-6">
     <a href="/" className="hover:text-blue-400">Home</a>
-    <a href="#roster" className="hover:text-blue-400">Roster</a>
     <a href="#features" className="hover:text-blue-400">Features</a>
+    <a href="#roster" className="hover:text-blue-400">Roster</a>
     <a href="#gallery" className="hover:text-blue-400">Gallery</a>
+    <a href="#alliances" className="hover:text-blue-400">Alliances</a>
     <a href="#join" className="transition hover:text-blue-400">Join Us</a>
   </div>
 
