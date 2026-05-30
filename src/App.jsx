@@ -6,14 +6,21 @@ export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const galleryImages = [
-    "/images/gold1.png",
-    "/images/goldset.png",
-    "/images/newyear.png",
-    "/images/nulgath.png",
-    "/images/valentines.png",
-];
-
+  const [memories, setMemories] = useState([]);
+  const [memoriesLoading, setMemoriesLoading] = useState(true);
+  const galleryImages = memories.map(m => m.imageUrl);
+useEffect(() => {
+  fetch("https://aqw-bot-production.up.railway.app/memories")
+    .then((res) => res.json())
+    .then((data) => {
+      setMemories(data);
+      setMemoriesLoading(false);
+    })
+    .catch((err) => {
+      console.error(err);
+      setMemoriesLoading(false);
+    });
+}, []);
 const selectedImage =
   selectedImageIndex !== null
     ? galleryImages[selectedImageIndex]
