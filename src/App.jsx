@@ -461,11 +461,11 @@ export default function App() {
 
         <div className="mx-auto w-full max-w-7xl text-center">
           <h2 className="mt-4 font-serif text-4xl font-black tracking-[0.08em] text-white sm:text-5xl lg:text-6xl lg:tracking-[0.18em]">
-            OUR ALLIANCE
+            OUR ALLIANCES
           </h2>
 
           <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-gray-400 sm:text-lg">
-            Guilds and communities standing alongside{" "}
+            and communities standing alongside{" "}
             <span className="text-blue-400">Stormforged</span>.
           </p>
 
