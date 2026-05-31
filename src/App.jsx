@@ -167,24 +167,28 @@ export default function App() {
       </nav>
 
       {/* Hero Section */}
-      <motion.section
-        id="home"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
-        className="relative z-10 h-[calc(100vh-88px)] overflow-hidden"
-      >
-        <div className="section-storm-glow" />
+<motion.section
+  id="home"
+  initial={{ opacity: 0 }}
+  animate={{ opacity: 1 }}
+  transition={{ duration: 0.8 }}
+  className="relative z-10 h-[calc(100vh-88px)] overflow-hidden"
+>
+  <div className="section-storm-glow" />
 
-        <img
-          src="/images/actual banner.png"
-          alt="Stormforged Banner"
-          className="absolute inset-0 h-full w-full object-cover brightness-110"
-          style={{ objectPosition: "center 10%" }}
-        />
+  <picture>
+    <source media="(max-width: 640px)" srcSet="/images/banner-mobile.png" />
+    <source media="(max-width: 1024px)" srcSet="/images/banner-tablet.png" />
 
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#050816]/20" />
-      </motion.section>
+    <img
+      src="/images/banner-desktop.png"
+      alt="Stormforged Banner"
+      className="absolute inset-0 h-full w-full object-cover brightness-110"
+    />
+  </picture>
+
+  <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#050816]/20" />
+</motion.section>
 
       {/* FEATURES SECTION */}
       <motion.section
@@ -446,13 +450,13 @@ export default function App() {
 
       {/* ALLIANCES SECTION */}
       <motion.section
-        id="alliances"
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true }}
-        className="relative z-10 flex min-h-[calc(100vh-88px)] items-center px-4 py-16 sm:px-6 lg:py-20"
-      >
+  id="alliances"
+  initial={{ opacity: 0, y: 40 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.8 }}
+  viewport={{ once: true }}
+  className="relative z-10 px-4 pt-10 pb-16 sm:px-6 lg:pt-12 lg:pb-20"
+>
         <div className="section-storm-glow" />
 
         <div className="mx-auto w-full max-w-7xl text-center">
