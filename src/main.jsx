@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import App from './App'
 import Roster from './pages/Roster'
+import Memories from "./pages/Memories";
 
 import './index.css'
 
@@ -17,7 +18,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path="/" element={<App />} />
 
         <Route path="/roster" element={<Roster />} />
-
+        <Route path="/memories" element={<Memories />} />
       </Routes>
 
     </BrowserRouter>

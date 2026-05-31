@@ -8,7 +8,8 @@ export default function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [memories, setMemories] = useState([]);
   const [memoriesLoading, setMemoriesLoading] = useState(true);
-  const galleryImages = memories.map(m => m.imageUrl);
+  const pinnedMemories = memories.filter(memory => memory.pinned);
+  const galleryImages = pinnedMemories.map(memory => memory.imageUrl);
 useEffect(() => {
   fetch("https://aqw-bot-production.up.railway.app/memories")
     .then((res) => res.json())
@@ -63,9 +64,44 @@ useEffect(() => {
     window.removeEventListener("keydown", handleKeyDown);
   };
 }, [selectedImage]);
-  return (
-    <div className="relative min-h-screen overflow-hidden bg-[#050816] text-white">
+useEffect(() => {
+  const handleScroll = () => {
+    if (window.scrollY < 0) {
+      window.scrollTo({ top: 0, behavior: "instant" });
+    }
+  };
 
+  // Also fix it when scrolling ends
+  let timeout;
+  const handleScrollEnd = () => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      if (window.scrollY < 5) {
+        window.scrollTo({ top: 0, behavior: "instant" });
+      }
+    }, 50);
+  };
+
+  window.addEventListener("scroll", handleScroll);
+  window.addEventListener("scroll", handleScrollEnd);
+  return () => {
+    window.removeEventListener("scroll", handleScroll);
+    window.removeEventListener("scroll", handleScrollEnd);
+  };
+}, []);
+  return (
+    <div className="pt-[88px] relative min-h-screen overflow-hidden bg-[#050816] text-white">
+{/* Global Storm Layer */}
+<div className="pointer-events-none absolute inset-0 overflow-hidden">
+  <div className="storm-lightning" />
+</div>
+<div className="storm-strikes">
+  <img
+    src="/images/lightning.png"
+    className="lightning-bolt"
+    alt=""
+  />
+</div>
       {/* Background Glow */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,#1e3a8a33,transparent_60%)]"></div>
       <div className="absolute inset-0 opacity-[0.03] bg-[linear-gradient(to_right,#ffffff_1px,transparent_1px),linear-gradient(to_bottom,#ffffff_1px,transparent_1px)] bg-[size:80px_80px]"></div>
@@ -77,9 +113,12 @@ useEffect(() => {
       {/* Navbar */}
       <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between border-b border-white/5 bg-[#050816]/35 px-8 py-6 backdrop-blur-xl">
 
-        <h1 className="text-2xl font-bold tracking-wide text-blue-400 sm:text-3xl">
-          STORMFORGED
-        </h1>
+      <a
+  href="/"
+  className="text-2xl font-bold tracking-[0.18em] text-blue-400 transition hover:text-blue-300 hover:drop-shadow-[0_0_12px_rgba(96,165,250,0.8)] sm:text-3xl"
+>
+  STORMFORGED
+</a>
 
         <div className="hidden gap-6 text-sm text-gray-300 md:flex">
           <a href="/" className="hover:text-blue-400 transition">Home</a>
@@ -117,14 +156,15 @@ useEffect(() => {
   initial={{ opacity: 0 }}
   animate={{ opacity: 1 }}
   transition={{ duration: 0.8 }}
-  className="relative z-10 mt-20 h-screen overflow-hidden"
+  className="relative z-10 h-[calc(100vh-88px)] overflow-hidden"
 >
+  <div className="section-storm-glow" />
   <img
     src="/images/actual banner.png"
     alt="Stormforged Banner"
     className="absolute inset-0 h-full w-full object-cover brightness-110"
+    style={{ objectPosition: "center 10%" }}
   />
-
   <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#050816]/20" />
 </motion.section>
 
@@ -137,9 +177,9 @@ useEffect(() => {
   whileInView={{ opacity: 1, y: 0 }}
   transition={{ duration: 0.8 }}
   viewport={{ once: true }}
-  className="relative z-10 px-6 py-24"
+  className="relative z-10 px-6 pt-10 pb-24"
 >
-
+<div className="section-storm-glow" />
   <div className="mx-auto max-w-7xl">
 
     <div className="mb-16 text-center">
@@ -226,21 +266,19 @@ useEffect(() => {
 {/* ROSTER PREVIEW */}
 
 <motion.section
-   id="roster"
+  id="roster"
   initial={{ opacity: 0, y: 40 }}
   whileInView={{ opacity: 1, y: 0 }}
   transition={{ duration: 0.8 }}
   viewport={{ once: true }}
   className="relative z-10 px-6 py-24"
 >
-
+  <div className="section-storm-glow" />
   <div className="mx-auto max-w-7xl">
 
-    <div className="mb-16 flex flex-col items-start justify-between gap-6 lg:flex-row lg:items-end">
-
-      <div>
-
-        <p className="text-blue-400 uppercase tracking-[0.3em] text-sm">
+    <div className="relative mb-14">
+      <div className="text-center">
+        <p className="text-sm uppercase tracking-[0.3em] text-blue-400">
           Guild Roster
         </p>
 
@@ -248,71 +286,55 @@ useEffect(() => {
           Active Members
         </h2>
 
-        <p className="mt-6 max-w-2xl text-lg text-gray-400">
-          A preview of Stormforged members synced directly from the guild roster system.
+        <p className="mt-4 text-lg text-gray-400">
+          A preview of Stormforged members.
         </p>
-
       </div>
 
       <a
-  href="/roster"
-  className="rounded-xl border border-white/10 bg-white/5 px-6 py-3 font-semibold text-white backdrop-blur-md transition hover:border-blue-400 hover:bg-blue-500/10"
->
-  View Full Roster
-</a>
-
+        href="/roster"
+        className="absolute right-0 top-16 hidden items-center gap-3 rounded-2xl border border-white/10 bg-[#0c132b]/80 px-7 py-4 text-lg font-bold text-white backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-blue-400/60 hover:bg-blue-500/10 hover:shadow-[0_0_25px_rgba(59,130,246,0.25)] lg:inline-flex"
+      >
+        👥 View Full Roster
+        <span className="text-blue-400">→</span>
+      </a>
     </div>
 
-    {/* TABLE */}
-
-    <div className="overflow-hidden rounded-[32px] border border-white/10 bg-white/5 backdrop-blur-2xl">
-
-      {/* HEADER */}
-
-      <div className="grid grid-cols-[1.4fr_1fr_0.6fr] border-b border-white/10 px-8 py-5 text-sm uppercase tracking-widest text-gray-400">
-
+    <div className="mx-auto max-w-5xl overflow-hidden rounded-[32px] border border-white/10 bg-white/5 backdrop-blur-2xl">
+      <div className="grid grid-cols-[2fr_1fr_0.5fr] border-b border-white/10 px-8 py-5 text-sm uppercase tracking-widest text-gray-400">
         <div>Name</div>
         <div>Rank</div>
         <div>Level</div>
-
       </div>
 
-      {/* MEMBERS */}
-
       {roster.slice(0, 5).map((member, index) => (
+        <div
+          key={index}
+          className="grid grid-cols-[2fr_1fr_0.5fr] border-b border-white/5 px-8 py-5 text-base transition hover:bg-white/5"
+        >
+          <a
+            href={`https://account.aq.com/CharPage?id=${encodeURIComponent(member.name)}`}
+            target="_blank"
+            rel="noreferrer"
+            className="block min-w-0 truncate pr-4 font-semibold transition hover:text-blue-400"
+          >
+            {member.name}
+          </a>
 
-  <div
-    key={index}
-    className="grid grid-cols-[1.6fr_0.9fr_0.5fr] border-b border-white/5 px-4 py-5 text-sm transition hover:bg-white/5 sm:px-8 sm:text-base"
-  >
+          <div className="text-blue-400">
+            {member.rank}
+          </div>
 
-    <a
-  href={`https://account.aq.com/CharPage?id=${encodeURIComponent(member.name)}`}
-  target="_blank"
-  rel="noreferrer"
-  className="block truncate pr-3 font-semibold transition hover:text-blue-400"
->
-  {member.name}
-</a>
-
-    <div className="text-blue-400">
-      {member.rank}
-    </div>
-
-    <div className="text-gray-300">
-      {member.level}
-    </div>
-
-  </div>
-
-))}
-
+          <div className="text-gray-300">
+            {member.level}
+          </div>
+        </div>
+      ))}
     </div>
 
   </div>
-
 </motion.section>
-{/* GALLERY SECTION */}
+
 
 {/* GALLERY SECTION */}
 
@@ -322,23 +344,51 @@ useEffect(() => {
   whileInView={{ opacity: 1, y: 0 }}
   transition={{ duration: 0.8 }}
   viewport={{ once: true }}
-  className="relative z-10 px-6 py-24"
+  className="relative z-10 flex min-h-screen items-center px-6 py-20"
 >
+  <div className="section-storm-glow" />
   <div className="mx-auto max-w-7xl">
 
-    <div className="mb-16 text-center">
-      <p className="text-blue-400 uppercase tracking-[0.3em] text-sm">
-        Hall of Memories
-      </p>
+    <div className="relative mb-12">
 
-      <h2 className="mt-4 text-5xl font-black">
-        Stormforged Moments
-      </h2>
+  <div className="text-center">
+    <p className="text-sm uppercase tracking-[0.3em] text-blue-400">
+      Hall of Memories
+    </p>
 
-      <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-400">
-        A growing collection of guild memories, clears, drops, and events.
-      </p>
-    </div>
+    <h2 className="mt-4 text-5xl font-black">
+      Stormforged Moments
+    </h2>
+
+    <p className="mt-4 text-lg text-gray-400">
+      A growing collection of guild memories, clears, drops, and events.
+    </p>
+  </div>
+
+  <a
+  href="/memories"
+  className="
+    absolute right-0 top-16 hidden lg:inline-flex
+    items-center
+    gap-3
+    rounded-2xl
+    border border-white/10
+    bg-[#0c132b]/80
+    px-7 py-4
+    text-lg font-bold text-white
+    backdrop-blur-md
+    transition-all duration-300
+    hover:border-blue-400/60
+    hover:bg-blue-500/10
+    hover:-translate-y-[55%]
+    hover:shadow-[0_0_25px_rgba(59,130,246,0.25)]
+  "
+>
+  📸 View All Memories
+  <span className="text-blue-400">→</span>
+</a>
+
+</div>
 
     <div className="gallery-scroll flex gap-6 overflow-x-auto pb-3 scroll-smooth">
 
@@ -407,87 +457,162 @@ useEffect(() => {
 )}
   </div>
 </motion.section>
-{/* ALLIANCES SECTION */}
 
+
+{/* ALLIANCES SECTION */}
 <motion.section
   id="alliances"
   initial={{ opacity: 0, y: 40 }}
   whileInView={{ opacity: 1, y: 0 }}
   transition={{ duration: 0.8 }}
   viewport={{ once: true }}
-  className="relative z-10 px-6 py-24"
+  className="relative z-10 px-6 pt-8 pb-28"
 >
-  <div className="mx-auto max-w-7xl">
+  <div className="section-storm-glow" />
+  <div className="mx-auto max-w-7xl text-center">
+    
 
-    <div className="mb-14 text-center">
-      <p className="text-blue-400 uppercase tracking-[0.3em] text-sm">
-        Allied Guilds
-      </p>
+    <h2 className="mt-4 font-serif text-6xl font-black tracking-[0.18em] text-white">
+      OUR ALLIANCE
+    </h2>
 
-      <h2 className="mt-4 text-5xl font-black">
-        Our Alliances
-      </h2>
+    <p className="mx-auto mt-5 max-w-2xl text-lg text-gray-400">
+      Guilds and communities standing alongside{" "}
+      <span className="text-blue-400">Stormforged</span>.
+    </p>
 
-      <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-400">
-        Guilds and communities standing alongside Stormforged.
-      </p>
-    </div>
-
-    <div className="grid gap-6 md:grid-cols-3">
-
+    <div className="mt-10 grid gap-6 md:grid-cols-3">
       {[
         {
-          name: "Ravens",
+          name: "RAVENS",
           image: "/images/ravens.png",
           url: "https://ravensaqw.lol",
+          colors: {
+    primary: "#ff1a1a",
+    secondary: "#ff3e4c",
+  },
+          desc: "SHADOW & CUNNING",
         },
         {
-          name: "Solaris",
-          image: "/images/solarisactual.png",
+          name: "SOLARIS",
+          image: "/images/solaris.png",
           url: "https://solarisaqw.lol",
+          colors: {
+    primary: "#ffae00",
+    secondary: "#f3dba8",
+  },
+          desc: "FIRE & GLORY",
         },
         {
-          name: "Vanaheim",
+          name: "VANAHEIM",
           image: "/images/vanaheim.png",
           url: "https://vanaheim.app",
+          colors: {
+    primary: "#d44969",
+    secondary: "#ffbf00",
+  },
+          desc: "NATURE & HONOUR",
         },
-      ].map((alliance, index) => (
-       <a
-  key={index}
+      ].map((alliance) => {
+        const isBlue = alliance.theme === "blue";
+
+        return (
+         <a
+  key={alliance.name}
   href={alliance.url}
   target="_blank"
   rel="noreferrer"
-  className="group overflow-hidden rounded-[32px] border border-white/10 bg-white/5 backdrop-blur-xl transition duration-300 hover:-translate-y-2 hover:border-blue-400/40"
+  className="group relative overflow-hidden rounded-[32px] border bg-black/40 p-4 backdrop-blur-xl transition duration-500 hover:-translate-y-3"
+  style={{
+    borderColor: `${alliance.colors.primary}55`,
+    boxShadow: `0 0 0 rgba(0,0,0,0)`,
+  }}
 >
+            <div
+  className="pointer-events-none absolute inset-0 opacity-0 transition duration-500 group-hover:opacity-100"
+  style={{
+    background: `linear-gradient(
+      135deg,
+      ${alliance.colors.primary}15,
+      ${alliance.colors.secondary}10
+    )`,
+  }}
+/>
+
+            <div
+              className={`absolute left-1/2 top-0 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rotate-45 border ${
+                isBlue
+                  ? "border-blue-300 bg-blue-500"
+                  : "border-amber-300 bg-amber-500"
+              }`}
+            />
+
+            <div className="relative overflow-hidden rounded-2xl">
+              <img
+                src={alliance.image}
+                alt={alliance.name}
+                className="h-64 w-full object-cover transition duration-700 group-hover:scale-110"
+              />
+
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
+            </div>
+
+            <div className="relative px-5 py-6">
+              <h3
+                className="font-serif text-4xl font-black"
+style={{
+  color: alliance.colors.secondary,
+  textShadow: `0 0 20px ${alliance.colors.primary}55`,
+}}
+              >
+                {alliance.name}
+              </h3>
+
+              <div
+  className="mx-auto mt-3 h-px w-20"
+  style={{
+    background: `linear-gradient(
+      90deg,
+      ${alliance.colors.primary},
+      ${alliance.colors.secondary}
+    )`,
+  }}
+/>
+
+              <p className="mx-auto mt-5 max-w-xs text-sm leading-6 text-gray-300">
+                {alliance.desc}
+              </p>
+
+              <div className="mt-7 flex justify-center">
   <div
-    className="relative h-[420px] w-full overflow-hidden"
+    className="px-8 py-3 text-sm font-bold uppercase tracking-[0.2em] transition-all duration-300 group-hover:scale-105"
     style={{
-      background:
-        alliance.name === "Ravens"
-          ? "linear-gradient(to bottom right, #160000, #050816)"
-          : alliance.name === "Solaris"
-          ? "linear-gradient(to bottom right, #3b2b00, #050816)"
-          : "linear-gradient(to bottom right, #2b1a00, #050816)",
+      color: alliance.colors.secondary,
+      border: `1px solid ${alliance.colors.primary}`,
+      background: `linear-gradient(
+        90deg,
+        ${alliance.colors.primary}20,
+        ${alliance.colors.secondary}20
+      )`,
+      clipPath:
+        "polygon(8% 0%,92% 0%,100% 50%,92% 100%,8% 100%,0% 50%)",
+      boxShadow: `0 0 25px ${alliance.colors.primary}30`,
     }}
   >
-    <img
-      src={alliance.image}
-      alt={alliance.name}
-      className="h-full w-full object-contain transition duration-500 group-hover:scale-105"
-    />
+    Visit Guild
   </div>
-
-  
-</a>
-      ))}
-
+</div>
+            </div>
+          </a>
+        );
+      })}
     </div>
-
   </div>
 </motion.section>
 {/* JOIN SECTION */}
 
 <section id="join" className="relative z-10 px-6 py-28">
+  <div className="section-storm-glow" />
 
   <div className="mx-auto max-w-5xl rounded-[40px] border border-blue-400/20 bg-blue-500/10 p-12 text-center backdrop-blur-2xl">
 

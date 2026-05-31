@@ -11,13 +11,17 @@ body {
   font-family: Inter, sans-serif;
   overflow-x: hidden;
 }
-#home,
+
+
 #features,
 #roster,
-#gallery {
-  scroll-margin-top: 96px;
+#gallery,
+#alliances,
+#join {
+  scroll-margin-top: 88px;
 }
-/* Scrollbar */
+
+/* Horizontal gallery scrollbar */
 .gallery-scroll {
   scrollbar-width: thin;
   scrollbar-color: rgba(59, 130, 246, 0.35) transparent;
@@ -42,10 +46,42 @@ body {
   background-color: rgba(59, 130, 246, 0.7);
 }
 
-/* Glow animation */
+/* Soft global storm glow */
+.storm-lightning {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.08), transparent 40%),
+    radial-gradient(circle at 80% 30%, rgba(96, 165, 250, 0.06), transparent 45%),
+    radial-gradient(circle at 50% 80%, rgba(37, 99, 235, 0.05), transparent 50%);
+  animation: stormPulse 10s ease-in-out infinite;
+}
+
+@keyframes stormPulse {
+  0%, 100% {
+    opacity: 0.45;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Section storm glow */
+.section-storm-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at center, rgba(59, 130, 246, 0.1), transparent 70%);
+}
+
+/* Animated blur orbs */
+.glow-orb {
+  animation: pulseGlow 8s ease-in-out infinite;
+}
 
 @keyframes pulseGlow {
-  0% {
+  0%, 100% {
     opacity: 0.5;
     transform: scale(1);
   }
@@ -54,13 +90,95 @@ body {
     opacity: 1;
     transform: scale(1.08);
   }
+}
 
-  100% {
-    opacity: 0.5;
-    transform: scale(1);
+/* PNG lightning strikes */
+.storm-strikes {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  overflow: hidden;
+}
+
+.lightning-bolt {
+  position: fixed;
+  top: -18vh;
+  right: -18vw;
+
+  width: 135vw;
+  max-width: none;
+
+  opacity: 0;
+  pointer-events: none;
+  z-index: 5;
+
+  transform: rotate(0deg);
+  transform-origin: center;
+
+  mix-blend-mode: screen;
+
+  filter:
+    brightness(1.8)
+    drop-shadow(0 0 25px #60a5fa)
+    drop-shadow(0 0 70px #60a5fa);
+
+  animation: megaStrike 7s infinite;
+}
+
+@keyframes megaStrike {
+  0%, 86%, 100% {
+    opacity: 0;
+  }
+
+  87% {
+    opacity: 0.95;
+  }
+
+  88% {
+    opacity: 0.25;
+  }
+
+  89% {
+    opacity: 1;
+  }
+
+  90% {
+    opacity: 0;
   }
 }
 
-.glow-orb {
-  animation: pulseGlow 8s ease-in-out infinite;
+
+
+/* Subtle sky flash that matches the lightning */
+.storm-strikes::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(147, 197, 253, 0.7);
+  opacity: 0;
+  mix-blend-mode: screen;
+  animation: skyFlash 8s infinite;
+}
+
+@keyframes skyFlash {
+  0%, 74%, 100% {
+    opacity: 0;
+  }
+
+  75% {
+    opacity: 0.08;
+  }
+
+  76% {
+    opacity: 0;
+  }
+
+  77% {
+    opacity: 0.05;
+  }
+
+  78% {
+    opacity: 0;
+  }
 }
