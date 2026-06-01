@@ -180,7 +180,7 @@ export default function Roster() {
                 </div>
 
                 <div className="mt-1 text-sm text-gray-300 sm:mt-0 sm:text-base">
-                  Level {member.level}
+                  {member.level}
                 </div>
               </div>
             ))}
