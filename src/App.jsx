@@ -106,33 +106,21 @@ export default function App() {
 
       {/* Navbar */}
       <nav className="fixed left-0 right-0 top-0 z-50 flex items-center justify-between border-b border-white/5 bg-[#050816]/35 px-5 py-6 backdrop-blur-xl sm:px-8">
-        <a
-          href="/"
-          className="text-xl font-bold tracking-[0.18em] text-blue-400 transition hover:text-blue-300 hover:drop-shadow-[0_0_12px_rgba(96,165,250,0.8)] sm:text-3xl"
-        >
-          STORMFORGED
-        </a>
+      <a
+  href="/"
+  className="font-ralmone text-2xl tracking-[0.28em] text-blue-400 transition hover:text-blue-300 hover:drop-shadow-[0_0_12px_rgba(96,165,250,0.8)] sm:text-3xl"
+>
+  STORMFORGED
+</a>
 
-        <div className="hidden gap-6 text-sm text-gray-300 md:flex">
-          <a href="/" className="transition hover:text-blue-400">
-            Home
-          </a>
-          <a href="#features" className="transition hover:text-blue-400">
-            Features
-          </a>
-          <a href="#roster" className="transition hover:text-blue-400">
-            Roster
-          </a>
-          <a href="#gallery" className="transition hover:text-blue-400">
-            Gallery
-          </a>
-          <a href="#alliances" className="transition hover:text-blue-400">
-            Alliances
-          </a>
-          <a href="#join" className="transition hover:text-blue-400">
-            Join Us
-          </a>
-        </div>
+   <div className="hidden gap-6 font-ralmone text-sm tracking-[0.14em] text-gray-300 md:flex">
+  <a href="/" className="transition hover:text-blue-400">Home</a>
+  <a href="#features" className="transition hover:text-blue-400">Features</a>
+  <a href="#roster" className="transition hover:text-blue-400">Roster</a>
+  <a href="#gallery" className="transition hover:text-blue-400">Gallery</a>
+  <a href="#alliances" className="transition hover:text-blue-400">Alliances</a>
+  <a href="#join" className="transition hover:text-blue-400">Join Us</a>
+</div>
 
         <div className="relative md:hidden">
           <button
@@ -143,26 +131,26 @@ export default function App() {
           </button>
 
           {mobileMenuOpen && (
-            <div className="absolute right-0 mt-3 w-44 rounded-2xl border border-white/10 bg-[#070b1a] p-3 shadow-2xl">
-              {[
-                ["Home", "/"],
-                ["Features", "#features"],
-                ["Roster", "#roster"],
-                ["Gallery", "#gallery"],
-                ["Alliances", "#alliances"],
-                ["Join Us", "#join"],
-              ].map(([label, href]) => (
-                <a
-                  key={label}
-                  href={href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block rounded-xl px-4 py-3 text-white hover:bg-white/10"
-                >
-                  {label}
-                </a>
-              ))}
-            </div>
-          )}
+  <div className="absolute right-0 mt-3 w-48 rounded-2xl border border-white/10 bg-[#070b1a] p-3 font-ralmone tracking-[0.12em] shadow-2xl">
+    {[
+      ["Home", "/"],
+      ["Features", "#features"],
+      ["Roster", "#roster"],
+      ["Gallery", "#gallery"],
+      ["Alliances", "#alliances"],
+      ["Join Us", "#join"],
+    ].map(([label, href]) => (
+      <a
+        key={label}
+        href={href}
+        onClick={() => setMobileMenuOpen(false)}
+        className="block rounded-xl px-4 py-3 text-white transition hover:bg-white/10 hover:text-blue-400"
+      >
+        {label}
+      </a>
+    ))}
+  </div>
+)}
         </div>
       </nav>
 
@@ -465,7 +453,7 @@ export default function App() {
           </h2>
 
           <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-gray-400 sm:text-lg">
-            and communities standing alongside{" "}
+            Guilds and communities standing alongside{" "}
             <span className="text-blue-400">Stormforged</span>.
           </p>
 

@@ -1,4 +1,24 @@
 @import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Uncial+Antiqua&family=MedievalSharp&family=Pirata+One&family=UnifrakturMaguntia&family=Almendra+SC&family=Caesar+Dressing&family=Bokor&display=swap");
+
+@font-face {
+  font-family: "Palagio";
+  src: url("/fonts/Palagio.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Ralmone";
+  src: url("/fonts/Ralmone.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+.font-palagio {
+  font-family: "Palagio", sans-serif;
+}
 
 html {
   scroll-behavior: smooth;
@@ -12,6 +32,41 @@ body {
   overflow-x: hidden;
 }
 
+
+.font-ralmone {
+  font-family: "Ralmone", sans-serif;
+}
+.font-cinzel-decorative {
+  font-family: "Cinzel Decorative", serif;
+}
+
+.font-uncial {
+  font-family: "Uncial Antiqua", serif;
+}
+
+.font-medieval {
+  font-family: "MedievalSharp", serif;
+}
+
+.font-pirata {
+  font-family: "Pirata One", serif;
+}
+
+.font-fraktur {
+  font-family: "UnifrakturMaguntia", serif;
+}
+
+.font-almendra {
+  font-family: "Almendra SC", serif;
+}
+
+.font-caesar {
+  font-family: "Caesar Dressing", serif;
+}
+
+.font-bokor {
+  font-family: "Bokor", serif;
+}
 
 #features,
 #roster,
