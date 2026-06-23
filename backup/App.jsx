@@ -1,11 +1,11 @@
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
+import roster from "./data/roster.json";
 
 export default function App() {
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [memories, setMemories] = useState([]);
-  const [roster, setRoster] = useState([]);
 
   const pinnedMemories = memories.filter((memory) => memory.pinned);
   const galleryImages = pinnedMemories.map((memory) => memory.imageUrl);
@@ -15,17 +15,6 @@ export default function App() {
       .then((res) => res.json())
       .then((data) => {
         setMemories(data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }, []);
-
-  useEffect(() => {
-    fetch("https://aqw-bot-production.up.railway.app/guild-roster")
-      .then((res) => res.json())
-      .then((data) => {
-        setRoster(data);
       })
       .catch((err) => {
         console.error(err);
@@ -312,7 +301,7 @@ export default function App() {
               <div>Level</div>
             </div>
 
-            {(Array.isArray(roster) ? roster : []).slice(0, 5).map((member, index) => (
+            {roster.slice(0, 5).map((member, index) => (
               <div
                 key={index}
                 className="grid grid-cols-[1.6fr_0.9fr_0.5fr] border-b border-white/5 px-5 py-5 text-sm transition hover:bg-white/5 sm:grid-cols-[2fr_1fr_0.5fr] sm:px-8 sm:text-base"
