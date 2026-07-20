@@ -1,36 +1,76 @@
 import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export default function App() {
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [memories, setMemories] = useState([]);
+  const [memoriesLoading, setMemoriesLoading] = useState(true);
+  const [memoriesError, setMemoriesError] = useState(false);
   const [roster, setRoster] = useState([]);
+  const [rosterLoading, setRosterLoading] = useState(true);
+  const [rosterError, setRosterError] = useState(false);
+
+  const mobileMenuRef = useRef(null);
 
   const pinnedMemories = memories.filter((memory) => memory.pinned);
   const galleryImages = pinnedMemories.map((memory) => memory.imageUrl);
 
   useEffect(() => {
     fetch("https://aqw-bot-production.up.railway.app/memories")
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) throw new Error(`Request failed: ${res.status}`);
+        return res.json();
+      })
       .then((data) => {
         setMemories(data);
+        setMemoriesLoading(false);
       })
       .catch((err) => {
         console.error(err);
+        setMemoriesError(true);
+        setMemoriesLoading(false);
       });
   }, []);
 
   useEffect(() => {
     fetch("https://aqw-bot-production.up.railway.app/guild-roster")
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) throw new Error(`Request failed: ${res.status}`);
+        return res.json();
+      })
       .then((data) => {
         setRoster(Array.isArray(data) ? data : data.members || []);
+        setRosterLoading(false);
       })
       .catch((err) => {
         console.error(err);
+        setRosterError(true);
+        setRosterLoading(false);
       });
   }, []);
+
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+
+    const handleClickOutside = (e) => {
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(e.target)) {
+        setMobileMenuOpen(false);
+      }
+    };
+
+    const handleEscape = (e) => {
+      if (e.key === "Escape") setMobileMenuOpen(false);
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleEscape);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, [mobileMenuOpen]);
 
   const selectedImage =
     selectedImageIndex !== null ? galleryImages[selectedImageIndex] : null;
@@ -69,41 +109,41 @@ export default function App() {
     };
   }, [selectedImage]);
 
+  const scrollToSection = (e, hash) => {
+    e.preventDefault();
+    const target = document.querySelector(hash);
+    if (target) {
+      const navOffset = 88;
+      const targetY = target.getBoundingClientRect().top + window.scrollY - navOffset;
+      window.scrollTo({ top: targetY, behavior: "smooth" });
+      window.history.pushState(null, "", hash);
+    }
+  };
+
   useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY < 0) {
-        window.scrollTo({ top: 0, behavior: "instant" });
-      }
-    };
-
-    let timeout;
-    const handleScrollEnd = () => {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => {
-        if (window.scrollY < 5) {
-          window.scrollTo({ top: 0, behavior: "instant" });
-        }
-      }, 50);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    window.addEventListener("scroll", handleScrollEnd);
+    document.body.style.overflow = selectedImage ? "hidden" : "";
 
     return () => {
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("scroll", handleScrollEnd);
+      document.body.style.overflow = "";
     };
-  }, []);
+  }, [selectedImage]);
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[#050816] pt-[88px] text-white">
+    <div className="relative min-h-screen overflow-hidden bg-storm pt-[88px] text-white">
+      <h1 className="sr-only">Stormforged — AdventureQuest Worlds Guild</h1>
+
       {/* Global Storm Layer */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="storm-lightning" />
       </div>
 
       <div className="storm-strikes">
-        <img src="/images/lightning.png" className="lightning-bolt" alt="" />
+        <img
+          src="/images/lightning.webp"
+          className="lightning-bolt"
+          alt=""
+          loading="lazy"
+        />
       </div>
 
       {/* Background Glow */}
@@ -124,25 +164,31 @@ export default function App() {
   STORMFORGED
 </a>
 
-   <div className="hidden gap-6 font-ralmone text-sm tracking-[0.14em] text-gray-300 md:flex">
-  <a href="/" className="transition hover:text-blue-400">Home</a>
-  <a href="#features" className="transition hover:text-blue-400">Features</a>
-  <a href="#roster" className="transition hover:text-blue-400">Roster</a>
-  <a href="#gallery" className="transition hover:text-blue-400">Gallery</a>
-  <a href="#alliances" className="transition hover:text-blue-400">Alliances</a>
-  <a href="#join" className="transition hover:text-blue-400">Join Us</a>
+   <div className="hidden gap-5 font-ralmone text-sm tracking-[0.14em] text-gray-300 lg:flex">
+  <a href="/" className="flex items-center py-3 transition hover:text-blue-400">Home</a>
+  <a href="#features" onClick={(e) => scrollToSection(e, "#features")} className="flex items-center py-3 transition hover:text-blue-400">Features</a>
+  <a href="#roster" onClick={(e) => scrollToSection(e, "#roster")} className="flex items-center py-3 transition hover:text-blue-400">Roster</a>
+  <a href="#gallery" onClick={(e) => scrollToSection(e, "#gallery")} className="flex items-center py-3 transition hover:text-blue-400">Gallery</a>
+  <a href="#alliances" onClick={(e) => scrollToSection(e, "#alliances")} className="flex items-center py-3 transition hover:text-blue-400">Alliances</a>
+  <a href="#join" onClick={(e) => scrollToSection(e, "#join")} className="flex items-center py-3 transition hover:text-blue-400">Join Us</a>
 </div>
 
-        <div className="relative md:hidden">
+        <div className="relative lg:hidden" ref={mobileMenuRef}>
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-white"
+            aria-label="Toggle menu"
+            aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-menu"
+            className="flex min-h-11 items-center rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-white"
           >
             Menu
           </button>
 
           {mobileMenuOpen && (
-  <div className="absolute right-0 mt-3 w-48 rounded-2xl border border-white/10 bg-[#070b1a] p-3 font-ralmone tracking-[0.12em] shadow-2xl">
+  <div
+    id="mobile-menu"
+    className="absolute right-0 mt-3 w-48 rounded-2xl border border-white/10 bg-[#070b1a] p-3 font-ralmone tracking-[0.12em] shadow-2xl"
+  >
     {[
       ["Home", "/"],
       ["Features", "#features"],
@@ -154,7 +200,10 @@ export default function App() {
       <a
         key={label}
         href={href}
-        onClick={() => setMobileMenuOpen(false)}
+        onClick={(e) => {
+          setMobileMenuOpen(false);
+          if (href.startsWith("#")) scrollToSection(e, href);
+        }}
         className="block rounded-xl px-4 py-3 text-white transition hover:bg-white/10 hover:text-blue-400"
       >
         {label}
@@ -176,12 +225,12 @@ export default function App() {
   <div className="section-storm-glow" />
 
   <picture>
-    <source media="(max-width: 640px)" srcSet="/images/banner-mobile.png" />
-    <source media="(max-width: 1024px)" srcSet="/images/banner-tablet.png" />
+    <source media="(max-width: 640px)" srcSet="/images/banner-mobile.webp" />
+    <source media="(max-width: 1024px)" srcSet="/images/banner-tablet.webp" />
 
     <img
-      src="/images/banner-desktop.png"
-      alt="Stormforged Banner"
+      src="/images/banner-desktop.webp"
+      alt="Stormforged — Forged in Storm, United as Legends"
       className="absolute inset-0 h-full w-full object-cover brightness-110"
     />
   </picture>
@@ -193,9 +242,8 @@ export default function App() {
       <motion.section
         id="features"
         initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        viewport={{ once: true }}
         className="relative z-10 px-4 pt-10 pb-20 sm:px-6 lg:pb-24"
       >
         <div className="section-storm-glow" />
@@ -217,7 +265,7 @@ export default function App() {
           </div>
 
           <div className="grid gap-6 md:grid-cols-3">
-            <div className="rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl transition hover:-translate-y-2 hover:border-blue-400/50 hover:shadow-2xl hover:shadow-blue-500/10">
+            <div className="rounded-3xl border border-white/10 bg-white/[0.07] p-8 transition hover:-translate-y-2 hover:border-blue-400/50 hover:shadow-2xl hover:shadow-blue-500/10">
               <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-500/20 text-3xl">
                 ⚔️
               </div>
@@ -230,7 +278,7 @@ export default function App() {
               </p>
             </div>
 
-            <div className="rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl transition hover:-translate-y-2 hover:border-blue-400/50 hover:shadow-2xl hover:shadow-blue-500/10">
+            <div className="rounded-3xl border border-white/10 bg-white/[0.07] p-8 transition hover:-translate-y-2 hover:border-blue-400/50 hover:shadow-2xl hover:shadow-blue-500/10">
               <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-cyan-500/20 text-3xl">
                 🛡️
               </div>
@@ -243,7 +291,7 @@ export default function App() {
               </p>
             </div>
 
-            <div className="rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl transition hover:-translate-y-2 hover:border-blue-400/50 hover:shadow-2xl hover:shadow-blue-500/10">
+            <div className="rounded-3xl border border-white/10 bg-white/[0.07] p-8 transition hover:-translate-y-2 hover:border-blue-400/50 hover:shadow-2xl hover:shadow-blue-500/10">
               <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-indigo-500/20 text-3xl">
                 🌩️
               </div>
@@ -263,9 +311,8 @@ export default function App() {
       <motion.section
         id="roster"
         initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        viewport={{ once: true }}
         className="relative z-10 px-4 py-20 sm:px-6 lg:py-24"
       >
         <div className="section-storm-glow" />
@@ -273,11 +320,7 @@ export default function App() {
         <div className="mx-auto max-w-7xl">
           <div className="relative mb-12 sm:mb-14">
             <div className="text-center">
-              <p className="text-sm uppercase tracking-[0.3em] text-blue-400">
-                Guild Roster
-              </p>
-
-              <h2 className="mt-4 text-4xl font-black sm:text-5xl">
+              <h2 className="text-4xl font-black sm:text-5xl">
                 Active Members
               </h2>
 
@@ -305,34 +348,48 @@ export default function App() {
             </div>
           </div>
 
-          <div className="mx-auto max-w-5xl overflow-hidden rounded-[28px] border border-white/10 bg-white/5 backdrop-blur-2xl sm:rounded-[32px]">
+          <div className="mx-auto max-w-5xl overflow-hidden rounded-[28px] border border-white/10 bg-white/[0.06] sm:rounded-[32px]">
             <div className="grid grid-cols-[1.6fr_0.9fr_0.5fr] border-b border-white/10 px-5 py-5 text-xs uppercase tracking-widest text-gray-400 sm:grid-cols-[2fr_1fr_0.5fr] sm:px-8 sm:text-sm">
               <div>Name</div>
               <div>Rank</div>
               <div>Level</div>
             </div>
 
-            {(Array.isArray(roster) ? roster : []).slice(0, 5).map((member, index) => (
-              <div
-                key={index}
-                className="grid grid-cols-[1.6fr_0.9fr_0.5fr] border-b border-white/5 px-5 py-5 text-sm transition hover:bg-white/5 sm:grid-cols-[2fr_1fr_0.5fr] sm:px-8 sm:text-base"
-              >
-                <a
-                  href={`https://account.aq.com/CharPage?id=${encodeURIComponent(
-                    member.name
-                  )}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="block min-w-0 truncate pr-4 font-semibold transition hover:text-blue-400"
-                >
-                  {member.name}
-                </a>
-
-                <div className="truncate text-blue-400">{member.rank}</div>
-
-                <div className="text-gray-300">{member.level}</div>
+            {rosterLoading && (
+              <div role="status" className="px-5 py-10 text-center text-gray-400 sm:px-8">
+                Loading roster...
               </div>
-            ))}
+            )}
+
+            {!rosterLoading && rosterError && (
+              <div className="px-5 py-10 text-center text-gray-400 sm:px-8">
+                Couldn't load the roster right now — try refreshing the page.
+              </div>
+            )}
+
+            {!rosterLoading &&
+              !rosterError &&
+              (Array.isArray(roster) ? roster : []).slice(0, 5).map((member, index) => (
+                <div
+                  key={index}
+                  className="grid grid-cols-[1.6fr_0.9fr_0.5fr] border-b border-white/5 px-5 py-2.5 text-sm transition hover:bg-white/5 sm:grid-cols-[2fr_1fr_0.5fr] sm:px-8 sm:text-base"
+                >
+                  <a
+                    href={`https://account.aq.com/CharPage?id=${encodeURIComponent(
+                      member.name
+                    )}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex min-w-0 items-center truncate py-2.5 pr-4 font-semibold transition hover:text-blue-400"
+                  >
+                    {member.name}
+                  </a>
+
+                  <div className="flex items-center truncate text-blue-400">{member.rank}</div>
+
+                  <div className="flex items-center text-gray-300">{member.level}</div>
+                </div>
+              ))}
           </div>
         </div>
       </motion.section>
@@ -341,9 +398,8 @@ export default function App() {
       <motion.section
         id="gallery"
         initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        viewport={{ once: true }}
         className="relative z-10 flex min-h-[calc(100vh-88px)] items-center px-4 py-16 sm:px-6 lg:py-20"
       >
         <div className="section-storm-glow" />
@@ -351,11 +407,7 @@ export default function App() {
         <div className="mx-auto w-full max-w-7xl">
           <div className="relative mb-10">
             <div className="text-center">
-              <p className="text-sm uppercase tracking-[0.3em] text-blue-400">
-                Hall of Memories
-              </p>
-
-              <h2 className="mt-4 text-4xl font-black sm:text-5xl">
+              <h2 className="text-4xl font-black sm:text-5xl">
                 Stormforged Moments
               </h2>
 
@@ -384,64 +436,35 @@ export default function App() {
             </div>
           </div>
 
-          <div className="gallery-scroll flex gap-4 overflow-x-auto pb-3 scroll-smooth sm:gap-6">
-            {galleryImages.map((image, index) => (
-              <div
-                key={index}
-                className="min-w-[85vw] flex-shrink-0 sm:min-w-[500px]"
-              >
-                <img
-                  src={image}
-                  alt={`Stormforged memory ${index + 1}`}
+          {memoriesLoading && (
+            <p role="status" className="py-10 text-center text-gray-400">
+              Loading memories...
+            </p>
+          )}
+
+          {!memoriesLoading && memoriesError && (
+            <p className="py-10 text-center text-gray-400">
+              Couldn't load memories right now — try refreshing the page.
+            </p>
+          )}
+
+          {!memoriesLoading && !memoriesError && (
+            <div className="gallery-scroll flex gap-4 overflow-x-auto pb-3 scroll-smooth sm:gap-6">
+              {galleryImages.map((image, index) => (
+                <button
+                  key={index}
                   onClick={() => setSelectedImageIndex(index)}
-                  className="h-[220px] w-full cursor-pointer rounded-3xl border border-white/10 object-cover shadow-lg shadow-black/40 transition hover:scale-[1.02] hover:border-blue-400/50 sm:h-[320px]"
-                />
-              </div>
-            ))}
-          </div>
-
-          {selectedImage && (
-            <div
-              onClick={() => setSelectedImageIndex(null)}
-              className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 p-4 sm:p-6"
-            >
-              <button
-                onClick={() => setSelectedImageIndex(null)}
-                className="absolute right-4 top-4 rounded-xl bg-white/10 px-4 py-2 text-white hover:bg-white/20 sm:right-6 sm:top-6"
-              >
-                ✕
-              </button>
-
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  prevImage();
-                }}
-                className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-white/10 px-4 py-3 text-3xl text-white hover:bg-white/20 sm:left-6 sm:px-5 sm:py-4"
-              >
-                ‹
-              </button>
-
-              <img
-                src={selectedImage}
-                alt="Preview"
-                onClick={(e) => e.stopPropagation()}
-                className="max-h-[82vh] max-w-[90vw] rounded-2xl object-contain shadow-2xl shadow-black"
-              />
-
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  nextImage();
-                }}
-                className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-white/10 px-4 py-3 text-3xl text-white hover:bg-white/20 sm:right-6 sm:px-5 sm:py-4"
-              >
-                ›
-              </button>
-
-              <div className="absolute bottom-6 rounded-full bg-white/10 px-5 py-2 text-sm text-gray-300">
-                {selectedImageIndex + 1} / {galleryImages.length}
-              </div>
+                  aria-label={`Open memory ${index + 1} of ${galleryImages.length}`}
+                  className="min-w-[85vw] flex-shrink-0 sm:min-w-[500px]"
+                >
+                  <img
+                    src={image}
+                    alt=""
+                    loading="lazy"
+                    className="h-[220px] w-full cursor-pointer rounded-3xl border border-white/10 object-cover shadow-lg shadow-black/40 transition hover:scale-[1.02] hover:border-blue-400/50 sm:h-[320px]"
+                  />
+                </button>
+              ))}
             </div>
           )}
         </div>
@@ -451,9 +474,8 @@ export default function App() {
       <motion.section
   id="alliances"
   initial={{ opacity: 0, y: 40 }}
-  whileInView={{ opacity: 1, y: 0 }}
+  animate={{ opacity: 1, y: 0 }}
   transition={{ duration: 0.8 }}
-  viewport={{ once: true }}
   className="relative z-10 px-4 pt-10 pb-16 sm:px-6 lg:pt-12 lg:pb-20"
 >
         <div className="section-storm-glow" />
@@ -472,7 +494,7 @@ export default function App() {
             {[
               {
                 name: "RAVENS",
-                image: "/images/ravens.png",
+                image: "/images/ravens.webp",
                 url: "https://ravensaqw.lol",
                 colors: {
                   primary: "#ff1a1a",
@@ -482,7 +504,7 @@ export default function App() {
               },
               {
                 name: "SOLARIS",
-                image: "/images/solaris.png",
+                image: "/images/solaris.webp",
                 url: "https://solarisaqw.lol",
                 colors: {
                   primary: "#ffae00",
@@ -492,7 +514,7 @@ export default function App() {
               },
               {
                 name: "VANAHEIM",
-                image: "/images/vanaheim.png",
+                image: "/images/vanaheim.webp",
                 url: "https://vanaheim.app",
                 colors: {
                   primary: "#d44969",
@@ -506,7 +528,7 @@ export default function App() {
                 href={alliance.url}
                 target="_blank"
                 rel="noreferrer"
-                className="group relative overflow-hidden rounded-[28px] border bg-black/40 p-3 backdrop-blur-xl transition duration-500 hover:-translate-y-3 sm:rounded-[32px] sm:p-4"
+                className="group relative overflow-hidden rounded-[28px] border bg-black/50 p-3 transition duration-500 hover:-translate-y-3 sm:rounded-[32px] sm:p-4"
                 style={{
                   borderColor: `${alliance.colors.primary}55`,
                   boxShadow: `0 0 0 rgba(0,0,0,0)`,
@@ -535,6 +557,7 @@ export default function App() {
                   <img
                     src={alliance.image}
                     alt={alliance.name}
+                    loading="lazy"
                     className="h-52 w-full object-cover transition duration-700 group-hover:scale-110 sm:h-60 lg:h-64"
                   />
 
@@ -597,7 +620,7 @@ export default function App() {
       <section id="join" className="relative z-10 px-4 py-20 sm:px-6 lg:py-28">
         <div className="section-storm-glow" />
 
-        <div className="mx-auto max-w-5xl rounded-[32px] border border-blue-400/20 bg-blue-500/10 p-6 text-center backdrop-blur-2xl sm:p-12 lg:rounded-[40px]">
+        <div className="mx-auto max-w-5xl rounded-[32px] border border-blue-400/20 bg-blue-500/[0.08] p-6 text-center sm:p-12 lg:rounded-[40px]">
           <p className="text-sm uppercase tracking-[0.3em] text-blue-400">
             Join the Forge
           </p>
@@ -620,24 +643,24 @@ export default function App() {
             Join Discord
           </a>
 
-          <footer className="relative z-10 mt-12 border-t border-white/10 px-4 py-10 text-center text-sm text-gray-500 sm:px-6">
+          <footer className="relative z-10 mt-12 border-t border-white/10 px-4 py-10 text-center text-sm text-gray-400 sm:px-6">
             <div className="mb-4 flex flex-wrap justify-center gap-4 sm:gap-6">
               <a href="/" className="hover:text-blue-400">
                 Home
               </a>
-              <a href="#features" className="hover:text-blue-400">
+              <a href="#features" onClick={(e) => scrollToSection(e, "#features")} className="hover:text-blue-400">
                 Features
               </a>
-              <a href="#roster" className="hover:text-blue-400">
+              <a href="#roster" onClick={(e) => scrollToSection(e, "#roster")} className="hover:text-blue-400">
                 Roster
               </a>
-              <a href="#gallery" className="hover:text-blue-400">
+              <a href="#gallery" onClick={(e) => scrollToSection(e, "#gallery")} className="hover:text-blue-400">
                 Gallery
               </a>
-              <a href="#alliances" className="hover:text-blue-400">
+              <a href="#alliances" onClick={(e) => scrollToSection(e, "#alliances")} className="hover:text-blue-400">
                 Alliances
               </a>
-              <a href="#join" className="transition hover:text-blue-400">
+              <a href="#join" onClick={(e) => scrollToSection(e, "#join")} className="transition hover:text-blue-400">
                 Join Us
               </a>
             </div>
@@ -646,6 +669,54 @@ export default function App() {
           </footer>
         </div>
       </section>
+
+      {selectedImage && (
+        <div
+          onClick={() => setSelectedImageIndex(null)}
+          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 p-4 sm:p-6"
+        >
+          <button
+            onClick={() => setSelectedImageIndex(null)}
+            aria-label="Close"
+            className="absolute right-4 top-4 flex h-11 w-11 items-center justify-center rounded-xl bg-white/10 text-white hover:bg-white/20 sm:right-6 sm:top-6"
+          >
+            ✕
+          </button>
+
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              prevImage();
+            }}
+            aria-label="Previous memory"
+            className="absolute left-3 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-3xl text-white hover:bg-white/20 sm:left-6 sm:h-12 sm:w-12"
+          >
+            ‹
+          </button>
+
+          <img
+            src={selectedImage}
+            alt="Preview"
+            onClick={(e) => e.stopPropagation()}
+            className="max-h-[82vh] max-w-[90vw] rounded-2xl object-contain shadow-2xl shadow-black"
+          />
+
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              nextImage();
+            }}
+            aria-label="Next memory"
+            className="absolute right-3 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-3xl text-white hover:bg-white/20 sm:right-6 sm:h-12 sm:w-12"
+          >
+            ›
+          </button>
+
+          <div className="absolute bottom-6 rounded-full bg-white/10 px-5 py-2 text-sm text-gray-300">
+            {selectedImageIndex + 1} / {galleryImages.length}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

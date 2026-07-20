@@ -1,13 +1,9 @@
 @import "tailwindcss";
-@import url("https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Uncial+Antiqua&family=MedievalSharp&family=Pirata+One&family=UnifrakturMaguntia&family=Almendra+SC&family=Caesar+Dressing&family=Bokor&display=swap");
 
-@font-face {
-  font-family: "Palagio";
-  src: url("/fonts/Palagio.otf") format("opentype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
+@theme {
+  --color-storm: #050816;
 }
+
 @font-face {
   font-family: "Ralmone";
   src: url("/fonts/Ralmone.otf") format("opentype");
@@ -16,56 +12,35 @@
   font-display: swap;
 }
 
-.font-palagio {
-  font-family: "Palagio", sans-serif;
-}
-
 html {
   scroll-behavior: smooth;
+  overscroll-behavior-y: none;
 }
 
 body {
   margin: 0;
-  background: #050816;
+  background: var(--color-storm);
   color: white;
-  font-family: Inter, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   overflow-x: hidden;
+  overscroll-behavior-y: none;
 }
-
 
 .font-ralmone {
   font-family: "Ralmone", sans-serif;
 }
-.font-cinzel-decorative {
-  font-family: "Cinzel Decorative", serif;
-}
 
-.font-uncial {
-  font-family: "Uncial Antiqua", serif;
-}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 
-.font-medieval {
-  font-family: "MedievalSharp", serif;
-}
-
-.font-pirata {
-  font-family: "Pirata One", serif;
-}
-
-.font-fraktur {
-  font-family: "UnifrakturMaguntia", serif;
-}
-
-.font-almendra {
-  font-family: "Almendra SC", serif;
-}
-
-.font-caesar {
-  font-family: "Caesar Dressing", serif;
-}
-
-.font-bokor {
-  font-family: "Bokor", serif;
+  .storm-lightning,
+  .glow-orb,
+  .lightning-bolt,
+  .storm-strikes::after {
+    animation: none !important;
+  }
 }
 
 #features,

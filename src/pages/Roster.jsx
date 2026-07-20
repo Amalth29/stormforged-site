@@ -9,6 +9,7 @@ export default function Roster() {
   const [roster, setRoster] = useState([]);
   const [totalMembers, setTotalMembers] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   const rankOrder = {
     Leader: 1,
@@ -18,7 +19,10 @@ export default function Roster() {
 
   useEffect(() => {
     fetch("https://aqw-bot-production.up.railway.app/guild-roster")
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) throw new Error(`Request failed: ${res.status}`);
+        return res.json();
+      })
       .then((data) => {
         setRoster(data.members || []);
         setTotalMembers(data.totalMembers || 0);
@@ -26,6 +30,7 @@ export default function Roster() {
       })
       .catch((err) => {
         console.error(err);
+        setError(true);
         setLoading(false);
       });
   }, []);
@@ -61,18 +66,36 @@ export default function Roster() {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#050816] text-white">
+      <div
+        role="status"
+        className="flex min-h-screen items-center justify-center bg-storm text-white"
+      >
         Loading guild roster...
       </div>
     );
   }
 
+  if (error) {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-storm px-6 text-center text-white">
+        <p className="text-lg font-semibold">Couldn't load the roster right now.</p>
+        <p className="text-gray-400">The guild API might be temporarily down. Try refreshing.</p>
+        <button
+          onClick={() => window.location.reload()}
+          className="rounded-xl border border-white/10 bg-white/5 px-6 py-3 font-semibold text-white transition hover:border-blue-400 hover:bg-blue-500/10"
+        >
+          Try Again
+        </button>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-[#050816] px-4 pb-20 pt-4 text-white sm:px-6">
+    <div className="min-h-screen bg-storm px-4 pb-20 pt-4 text-white sm:px-6">
       <div className="mx-auto max-w-7xl">
         <Link
           to="/"
-          className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-white backdrop-blur-xl transition hover:border-blue-400 hover:bg-blue-500/10"
+          className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.07] px-5 py-3 text-sm font-semibold text-white transition hover:border-blue-400 hover:bg-blue-500/10"
         >
           ← Back to Home
         </Link>
@@ -92,14 +115,14 @@ export default function Roster() {
         </div>
 
         <div className="mt-8 grid gap-4 sm:grid-cols-2">
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
+          <div className="rounded-2xl border border-white/10 bg-white/[0.07] p-6">
             <p className="text-sm text-gray-400">Total Members</p>
             <h2 className="mt-2 text-4xl font-black text-blue-400">
               {totalMembers}
             </h2>
           </div>
 
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
+          <div className="rounded-2xl border border-white/10 bg-white/[0.07] p-6">
             <p className="text-sm text-gray-400">Officers</p>
             <h2 className="mt-2 text-4xl font-black text-cyan-400">
               {roster.filter((member) => member.rank === "Officer").length}
@@ -107,16 +130,20 @@ export default function Roster() {
           </div>
         </div>
 
-        <p className="mt-4 text-sm text-gray-500">
+        <p className="mt-4 text-sm text-gray-400">
           Showing {filteredRoster.length} members
         </p>
 
+        <label htmlFor="roster-search" className="sr-only">
+          Search members
+        </label>
         <input
+          id="roster-search"
           type="text"
           placeholder="Search members..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="mt-4 mb-6 w-full rounded-2xl border border-white/10 bg-white/5 px-6 py-4 text-white outline-none backdrop-blur-xl"
+          className="mt-4 mb-6 w-full rounded-2xl border border-white/10 bg-white/[0.07] px-6 py-4 text-white outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
         />
 
         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center">
@@ -139,7 +166,7 @@ export default function Roster() {
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
-            className="w-full rounded-xl border border-white/10 bg-[#0c132b] px-5 py-3 font-semibold text-white outline-none backdrop-blur-xl sm:w-auto"
+            className="w-full rounded-xl border border-white/10 bg-[#0c132b] px-5 py-3 font-semibold text-white outline-none focus-visible:ring-2 focus-visible:ring-blue-400 sm:w-auto"
           >
             <option value="rank">Sort by Rank</option>
             <option value="name">Sort by Name</option>
@@ -147,7 +174,7 @@ export default function Roster() {
           </select>
         </div>
 
-        <div className="mx-auto mt-10 max-w-6xl overflow-hidden rounded-[28px] border border-white/10 bg-white/5 backdrop-blur-2xl">
+        <div className="mx-auto mt-10 max-w-6xl overflow-hidden rounded-[28px] border border-white/10 bg-white/[0.06]">
           <div className="hidden grid-cols-[4fr_1fr_0.7fr] border-b border-white/10 px-8 py-5 text-sm uppercase tracking-widest text-gray-400 sm:grid">
             <div>Name</div>
             <div>Rank</div>
@@ -166,7 +193,7 @@ export default function Roster() {
                   )}`}
                   target="_blank"
                   rel="noreferrer"
-                  className="block min-w-0 truncate pr-4 text-lg font-bold transition hover:text-blue-400 sm:text-base"
+                  className="flex min-w-0 items-center truncate py-2.5 pr-4 text-lg font-bold transition hover:text-blue-400 sm:text-base"
                 >
                   {member.name}
                 </a>

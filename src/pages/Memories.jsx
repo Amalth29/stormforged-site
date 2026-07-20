@@ -5,17 +5,22 @@ export default function Memories() {
   const [memories, setMemories] = useState([]);
   const [category, setCategory] = useState("all");
   const [loading, setLoading] = useState(true);
-  const [selectedMemory, setSelectedMemory] = useState(null); 
+  const [error, setError] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(null);
 
   useEffect(() => {
     fetch("https://aqw-bot-production.up.railway.app/memories")
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) throw new Error(`Request failed: ${res.status}`);
+        return res.json();
+      })
       .then((data) => {
         setMemories(data);
         setLoading(false);
       })
       .catch((err) => {
         console.error(err);
+        setError(true);
         setLoading(false);
       });
   }, []);
@@ -33,16 +38,79 @@ export default function Memories() {
       ? memories
       : memories.filter((memory) => memory.category === category);
 
+  const selectedMemory =
+    selectedIndex !== null ? filteredMemories[selectedIndex] : null;
+
+  const nextMemory = () => {
+    setSelectedIndex((prev) =>
+      prev === filteredMemories.length - 1 ? 0 : prev + 1
+    );
+  };
+
+  const prevMemory = () => {
+    setSelectedIndex((prev) =>
+      prev === 0 ? filteredMemories.length - 1 : prev - 1
+    );
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        setSelectedIndex(null);
+      }
+
+      if (e.key === "ArrowRight" && selectedMemory) {
+        nextMemory();
+      }
+
+      if (e.key === "ArrowLeft" && selectedMemory) {
+        prevMemory();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [selectedMemory]);
+
+  useEffect(() => {
+    document.body.style.overflow = selectedMemory ? "hidden" : "";
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [selectedMemory]);
+
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#050816] text-white">
+      <div
+        role="status"
+        className="flex min-h-screen items-center justify-center bg-storm text-white"
+      >
         Loading memories...
       </div>
     );
   }
 
+  if (error) {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-storm px-6 text-center text-white">
+        <p className="text-lg font-semibold">Couldn't load memories right now.</p>
+        <p className="text-gray-400">The guild API might be temporarily down. Try refreshing.</p>
+        <button
+          onClick={() => window.location.reload()}
+          className="rounded-xl border border-white/10 bg-white/5 px-6 py-3 font-semibold text-white transition hover:border-blue-400 hover:bg-blue-500/10"
+        >
+          Try Again
+        </button>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-[#050816] px-6 py-10 text-white">
+    <div className="min-h-screen bg-storm px-6 py-10 text-white">
       <div className="mx-auto max-w-7xl">
         <Link
           to="/"
@@ -88,15 +156,17 @@ export default function Memories() {
           </div>
         ) : (
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {filteredMemories.map((memory) => (
-              <div
+            {filteredMemories.map((memory, index) => (
+              <button
   key={memory.id}
-  onClick={() => setSelectedMemory(memory)}
-  className="group relative h-80 cursor-pointer overflow-hidden rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl transition hover:-translate-y-2 hover:border-blue-400/40 hover:shadow-2xl hover:shadow-blue-500/10"
+  onClick={() => setSelectedIndex(index)}
+  aria-label={`View ${memory.title || "Stormforged memory"}`}
+  className="group relative h-80 cursor-pointer overflow-hidden rounded-3xl border border-white/10 bg-white/[0.07] text-left transition hover:-translate-y-2 hover:border-blue-400/40 hover:shadow-2xl hover:shadow-blue-500/10"
 >
   <img
     src={memory.imageUrl}
-    alt={memory.title || "Stormforged Memory"}
+    alt=""
+    loading="lazy"
     className="h-full w-full object-cover transition duration-500 group-hover:scale-110"
   />
 
@@ -117,26 +187,53 @@ export default function Memories() {
       </p>
     )}
   </div>
-</div>
+</button>
             ))}
           </div>
         )}
       </div>
       {selectedMemory && (
   <div
-    onClick={() => setSelectedMemory(null)}
-    className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 p-6"
+    onClick={() => setSelectedIndex(null)}
+    className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 p-4 sm:p-6"
   >
     <div
       onClick={(e) => e.stopPropagation()}
-      className="relative max-w-5xl overflow-hidden rounded-3xl border border-white/10 bg-[#050816] shadow-2xl shadow-blue-500/10"
+      className="relative max-w-5xl overflow-hidden rounded-3xl border border-white/10 bg-storm shadow-2xl shadow-blue-500/10"
     >
       <button
-        onClick={() => setSelectedMemory(null)}
-        className="absolute right-4 top-4 z-10 rounded-xl bg-black/60 px-4 py-2 text-white backdrop-blur-md hover:bg-white/20"
+        onClick={() => setSelectedIndex(null)}
+        aria-label="Close"
+        className="absolute right-4 top-4 z-10 flex h-11 w-11 items-center justify-center rounded-xl bg-black/60 text-white backdrop-blur-md hover:bg-white/20"
       >
         ✕
       </button>
+
+      {filteredMemories.length > 1 && (
+        <>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              prevMemory();
+            }}
+            aria-label="Previous memory"
+            className="absolute left-3 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-black/60 text-2xl text-white backdrop-blur-md hover:bg-white/20"
+          >
+            ‹
+          </button>
+
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              nextMemory();
+            }}
+            aria-label="Next memory"
+            className="absolute right-3 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-black/60 text-2xl text-white backdrop-blur-md hover:bg-white/20"
+          >
+            ›
+          </button>
+        </>
+      )}
 
       <img
         src={selectedMemory.imageUrl}
@@ -159,7 +256,7 @@ export default function Memories() {
           </p>
         )}
 
-        <p className="mt-4 text-sm text-gray-500">
+        <p className="mt-4 text-sm text-gray-400">
           Added by {selectedMemory.uploadedBy || "Unknown"}
         </p>
       </div>
