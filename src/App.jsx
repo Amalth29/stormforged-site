@@ -1,5 +1,12 @@
 import { motion } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
+import HudPanel from "./components/HudPanel";
+
+const rankColor = (rank) => {
+  if (rank === "Leader") return "text-yellow-300";
+  if (rank === "Officer") return "text-blue-400";
+  return "text-gray-400";
+};
 
 export default function App() {
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
@@ -348,49 +355,61 @@ export default function App() {
             </div>
           </div>
 
-          <div className="mx-auto max-w-5xl overflow-hidden rounded-[28px] border border-white/10 bg-white/[0.06] sm:rounded-[32px]">
-            <div className="grid grid-cols-[1.6fr_0.9fr_0.5fr] border-b border-white/10 px-5 py-5 text-xs uppercase tracking-widest text-gray-400 sm:grid-cols-[2fr_1fr_0.5fr] sm:px-8 sm:text-sm">
-              <div>Name</div>
-              <div>Rank</div>
-              <div>Level</div>
-            </div>
+          <HudPanel className="mx-auto max-w-5xl">
+            <div className="relative overflow-hidden border border-blue-400/20 bg-[#050b1c]/80 shadow-[0_0_40px_-12px_rgba(59,130,246,0.25)]">
+              <div className="hud-scanline pointer-events-none absolute inset-x-0 opacity-[0.07]" />
 
-            {rosterLoading && (
-              <div role="status" className="px-5 py-10 text-center text-gray-400 sm:px-8">
-                Loading roster...
+              <div className="grid grid-cols-[1.6fr_0.9fr_0.5fr] border-b border-blue-400/20 px-5 py-4 font-mono text-[11px] uppercase tracking-[0.2em] text-blue-400/80 sm:grid-cols-[2fr_1fr_0.5fr] sm:px-8 sm:text-xs">
+                <div>Name</div>
+                <div>Rank</div>
+                <div>Lvl</div>
               </div>
-            )}
 
-            {!rosterLoading && rosterError && (
-              <div className="px-5 py-10 text-center text-gray-400 sm:px-8">
-                Couldn't load the roster right now — try refreshing the page.
-              </div>
-            )}
-
-            {!rosterLoading &&
-              !rosterError &&
-              (Array.isArray(roster) ? roster : []).slice(0, 5).map((member, index) => (
-                <div
-                  key={index}
-                  className="grid grid-cols-[1.6fr_0.9fr_0.5fr] border-b border-white/5 px-5 py-2.5 text-sm transition hover:bg-white/5 sm:grid-cols-[2fr_1fr_0.5fr] sm:px-8 sm:text-base"
-                >
-                  <a
-                    href={`https://account.aq.com/CharPage?id=${encodeURIComponent(
-                      member.name
-                    )}`}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="flex min-w-0 items-center truncate py-2.5 pr-4 font-semibold transition hover:text-blue-400"
-                  >
-                    {member.name}
-                  </a>
-
-                  <div className="flex items-center truncate text-blue-400">{member.rank}</div>
-
-                  <div className="flex items-center text-gray-300">{member.level}</div>
+              {rosterLoading && (
+                <div role="status" className="px-5 py-10 text-center font-mono text-xs uppercase tracking-widest text-gray-400 sm:px-8">
+                  Loading roster...
                 </div>
-              ))}
-          </div>
+              )}
+
+              {!rosterLoading && rosterError && (
+                <div className="px-5 py-10 text-center font-mono text-xs uppercase tracking-widest text-gray-400 sm:px-8">
+                  Couldn't load the roster right now — try refreshing the page.
+                </div>
+              )}
+
+              {!rosterLoading &&
+                !rosterError &&
+                (Array.isArray(roster) ? roster : []).slice(0, 5).map((member, index) => (
+                  <div
+                    key={index}
+                    style={{ animationDelay: `${index * 60}ms` }}
+                    className="hud-row group relative grid grid-cols-[1.6fr_0.9fr_0.5fr] items-center border-b border-white/5 px-5 py-3 font-mono text-sm transition hover:bg-blue-500/[0.06] sm:grid-cols-[2fr_1fr_0.5fr] sm:px-8 sm:text-base"
+                  >
+                    <span className="absolute left-0 top-0 h-full w-0 bg-blue-400 transition-all duration-300 group-hover:w-0.5" />
+
+                    <a
+                      href={`https://account.aq.com/CharPage?id=${encodeURIComponent(
+                        member.name
+                      )}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex min-w-0 items-center truncate pr-4 font-semibold tracking-wide transition group-hover:text-blue-300"
+                    >
+                      {member.name}
+                    </a>
+
+                    <div className={`truncate text-xs font-bold tracking-wider sm:text-sm ${rankColor(member.rank)}`}>
+                      [{(member.rank || "").toUpperCase()}]
+                    </div>
+
+                    <div className="text-gray-400">
+                      <span className="text-gray-600 sm:hidden">LV</span>
+                      {String(member.level ?? "").padStart(3, "0")}
+                    </div>
+                  </div>
+                ))}
+            </div>
+          </HudPanel>
         </div>
       </motion.section>
 

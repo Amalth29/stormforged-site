@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import HudPanel from "../components/HudPanel";
 
 export default function Roster() {
   const [search, setSearch] = useState("");
@@ -174,45 +175,53 @@ export default function Roster() {
           </select>
         </div>
 
-        <div className="mx-auto mt-10 max-w-6xl overflow-hidden rounded-[28px] border border-white/10 bg-white/[0.06]">
-          <div className="hidden grid-cols-[4fr_1fr_0.7fr] border-b border-white/10 px-8 py-5 text-sm uppercase tracking-widest text-gray-400 sm:grid">
-            <div>Name</div>
-            <div>Rank</div>
-            <div>Level</div>
-          </div>
+        <HudPanel className="mx-auto mt-10 max-w-6xl">
+          <div className="relative overflow-hidden border border-blue-400/20 bg-[#050b1c]/80 shadow-[0_0_40px_-12px_rgba(59,130,246,0.25)]">
+            <div className="hud-scanline pointer-events-none absolute inset-x-0 opacity-[0.07]" />
 
-          <div className="max-h-[720px] overflow-y-auto">
-            {filteredRoster.map((member, index) => (
-              <div
-                key={index}
-                className="border-b border-white/5 px-5 py-5 transition hover:bg-white/5 sm:grid sm:grid-cols-[4fr_1fr_0.7fr] sm:px-8"
-              >
-                <a
-                  href={`https://account.aq.com/CharPage?id=${encodeURIComponent(
-                    member.name
-                  )}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex min-w-0 items-center truncate py-2.5 pr-4 text-lg font-bold transition hover:text-blue-400 sm:text-base"
-                >
-                  {member.name}
-                </a>
-
-                <div
-                  className={`mt-2 text-sm font-semibold sm:mt-0 sm:text-base ${rankColor(
-                    member.rank
-                  )}`}
-                >
-                  {member.rank}
-                </div>
-
-                <div className="mt-1 text-sm text-gray-300 sm:mt-0 sm:text-base">
-                  {member.level}
-                </div>
+            <div className="max-h-[720px] overflow-y-auto">
+              <div className="sticky top-0 z-10 hidden grid-cols-[4fr_1fr_0.7fr] border-b border-blue-400/20 bg-[#050b1c] px-8 py-4 font-mono text-xs uppercase tracking-[0.2em] text-blue-400/80 sm:grid">
+                <div>Name</div>
+                <div>Rank</div>
+                <div>Lvl</div>
               </div>
-            ))}
+
+              {filteredRoster.map((member, index) => (
+                <div
+                  key={index}
+                  style={{ animationDelay: `${Math.min(index, 20) * 30}ms` }}
+                  className="hud-row group relative border-b border-white/5 px-5 py-4 font-mono transition hover:bg-blue-500/[0.06] sm:grid sm:grid-cols-[4fr_1fr_0.7fr] sm:items-center sm:px-8"
+                >
+                  <span className="absolute left-0 top-0 h-full w-0 bg-blue-400 transition-all duration-300 group-hover:w-0.5" />
+
+                  <a
+                    href={`https://account.aq.com/CharPage?id=${encodeURIComponent(
+                      member.name
+                    )}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex min-w-0 items-center truncate pr-4 text-lg font-bold tracking-wide transition group-hover:text-blue-300 sm:text-base"
+                  >
+                    {member.name}
+                  </a>
+
+                  <div
+                    className={`mt-2 truncate text-sm font-bold tracking-wider sm:mt-0 sm:text-sm ${rankColor(
+                      member.rank
+                    )}`}
+                  >
+                    [{(member.rank || "").toUpperCase()}]
+                  </div>
+
+                  <div className="mt-1 text-sm text-gray-400 sm:mt-0 sm:text-base">
+                    <span className="text-gray-600 sm:hidden">LV</span>
+                    {String(member.level ?? "").padStart(3, "0")}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        </HudPanel>
       </div>
     </div>
   );

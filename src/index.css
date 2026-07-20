@@ -30,6 +30,44 @@ body {
   font-family: "Ralmone", sans-serif;
 }
 
+/* HUD roster panel */
+@keyframes hud-row-in {
+  from {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.hud-row {
+  animation: hud-row-in 0.4s ease-out both;
+}
+
+@keyframes hud-scan {
+  0% {
+    transform: translateY(-100%);
+  }
+
+  100% {
+    transform: translateY(220%);
+  }
+}
+
+.hud-scanline {
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(96, 165, 250, 0.5),
+    transparent
+  );
+  height: 30%;
+  animation: hud-scan 6s linear infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -38,7 +76,9 @@ body {
   .storm-lightning,
   .glow-orb,
   .lightning-bolt,
-  .storm-strikes::after {
+  .storm-strikes::after,
+  .hud-row,
+  .hud-scanline {
     animation: none !important;
   }
 }
